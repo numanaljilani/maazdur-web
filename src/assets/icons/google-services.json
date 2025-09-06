@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "657473994506",
+    "project_id": "mazdur-ae769",
+    "storage_bucket": "mazdur-ae769.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657473994506:android:11c57afb99b77230b5c4f3",
+        "android_client_info": {
+          "package_name": "com.mazdoor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657473994506-2rjs7u57c5m699or4roqi3ti6t8kk9oj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mazdoor",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "657473994506-nfdfhlm85epvren5i8bu7m3thgo3quqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD70r-iN8zCCajbc2Kg21jTabxByFfuKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657473994506-nfdfhlm85epvren5i8bu7m3thgo3quqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
