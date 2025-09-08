@@ -1,37 +1,37 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { toast } from 'react-toastify';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
-import Link from 'next/link';
-import DatePicker from 'react-datepicker';
-import { setUser } from '@/service/slice/userSlice'; 
-import { useCompleteProfileMutation } from '@/service/api/userApi'; 
-import Button from '@/components/Button';
-import ActivityIndicator from '@/components/ActivityIndicator';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
+import DatePicker from "react-datepicker";
+import { setUser } from "@/service/slice/userSlice";
+import { useCompleteProfileMutation } from "@/service/api/userApi";
+import Button from "@/components/Button";
+import ActivityIndicator from "@/components/ActivityIndicator";
 
 // Placeholder icons; replace with your actual icon paths
 const icons = {
-  back: '/back.png',
-  avatar: '/avatar.png',
-  user: '/user.png',
-  signature: '/signature.png',
-  email: '/mail.png',
-  calendar: '/calendar.png',
-  india: '/india.png',
-  location: '/location.png',
+  back: "/back.png",
+  avatar: "/avatar.png",
+  user: "/user.png",
+  signature: "/signature.png",
+  email: "/mail.png",
+  calendar: "/calendar.png",
+  india: "/india.png",
+  location: "/location.png",
 };
 
 // Zod schema for form validation
 const profileSchema = z.object({
-  fullname: z.string().nonempty('Full name is required'),
+  fullname: z.string().nonempty("Full name is required"),
   nikname: z.string().optional(),
-  email: z.string().email('Invalid email').nonempty('Email is required'),
+  email: z.string().email("Invalid email").nonempty("Email is required"),
   phone: z.string().optional(),
   address: z.string().optional(),
   dob: z.date().optional(),
@@ -48,10 +48,11 @@ const CompleteProfilePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { language, dark } = useSelector((state: any) => state.user);
-  const [completeProfile, { data, isSuccess, isError, error }] = useCompleteProfileMutation();
+  const [completeProfile, { data, isSuccess, isError, error }] =
+    useCompleteProfileMutation();
 
-  const emailParam = searchParams.get('email') || '';
-  const passwordParam = searchParams.get('password') || '';
+  const emailParam = searchParams.get("email") || "";
+  const passwordParam = searchParams.get("password") || "";
 
   const {
     register,
@@ -67,7 +68,7 @@ const CompleteProfilePage = () => {
     },
   });
 
-  const dob = watch('dob');
+  const dob = watch("dob");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -82,30 +83,33 @@ const CompleteProfilePage = () => {
     try {
       const formDataToSend = new FormData();
       if (profileImage) {
-        formDataToSend.append('file', profileImage);
+        formDataToSend.append("file", profileImage);
       }
-      formDataToSend.append('fullname', formData.fullname);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('password', passwordParam);
-      if (formData.nikname) formDataToSend.append('nikname', formData.nikname);
-      if (formData.phone) formDataToSend.append('phone', formData.phone);
-      if (formData.address) formDataToSend.append('address', formData.address);
+      formDataToSend.append("fullname", formData.fullname);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("password", passwordParam);
+      if (formData.nikname) formDataToSend.append("nikname", formData.nikname);
+      if (formData.phone) formDataToSend.append("phone", formData.phone);
+      if (formData.address) formDataToSend.append("address", formData.address);
       if (formData.dob) {
-        formDataToSend.append('dob', formData.dob.toISOString().split('T')[0]);
+        formDataToSend.append(
+          "dob",
+          formData?.dob?.toISOString()?.split("T")[0]
+        );
       }
 
       const response: any = await completeProfile({ body: formDataToSend });
       if (response.error) {
-        toast.error(response.error.data?.error || 'Profile creation failed.', {
-          position: 'top-right',
+        toast.error(response.error.data?.error || "Profile creation failed.", {
+          position: "top-right",
           autoClose: 3000,
         });
         setLoading(false);
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong.', {
-        position: 'top-right',
+      toast.error("Something went wrong.", {
+        position: "top-right",
         autoClose: 3000,
       });
       setLoading(false);
@@ -115,9 +119,9 @@ const CompleteProfilePage = () => {
   useEffect(() => {
     if (isSuccess && data) {
       dispatch(setUser(data.user));
-      router.push('/login');
-      toast.success('User Created Successfully. Please login.', {
-        position: 'top-right',
+      router.push("/login");
+      toast.success("User Created Successfully. Please login.", {
+        position: "top-right",
         autoClose: 3000,
       });
       setLoading(false);
@@ -127,17 +131,24 @@ const CompleteProfilePage = () => {
   useEffect(() => {
     if (isError && error) {
       // @ts-ignore
-      toast.error(error?.data?.error || 'User creation failed. This user may already be registered.', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      toast.error(
+          // @ts-ignore
+        error?.data?.error ||
+          "User creation failed. This user may already be registered.",
+        {
+          position: "top-right",
+          autoClose: 3000,
+        }
+      );
       setLoading(false);
     }
   }, [isError, error]);
 
   return (
     <div
-      className={`min-h-screen py-3 ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}
+      className={`min-h-screen py-3 ${
+        dark ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+      }`}
     >
       <div className="px-5 flex items-center justify-between my-3">
         <Link href="/signup">
@@ -145,18 +156,16 @@ const CompleteProfilePage = () => {
         </Link>
         <h1
           className={`text-2xl font-semibold text-center ${
-            dark ? 'text-white' : 'text-black'
+            dark ? "text-white" : "text-black"
           }`}
         >
-          {language ? 'प्रोफ़ाइल पूर्ण करें' : 'Fill Your Profile'}
+          {language ? "प्रोफ़ाइल पूर्ण करें" : "Fill Your Profile"}
         </h1>
         <div className="w-8" /> {/* Spacer for alignment */}
       </div>
 
       <div className="relative w-36 h-36 mx-auto flex justify-center items-center">
-        <label
-          className="w-36 h-36 rounded-full bg-gray-50 my-3 flex justify-center items-center overflow-hidden cursor-pointer"
-        >
+        <label className="w-36 h-36 rounded-full bg-gray-50 my-3 flex justify-center items-center overflow-hidden cursor-pointer">
           <input
             type="file"
             accept="image/*"
@@ -178,7 +187,7 @@ const CompleteProfilePage = () => {
               width={144}
               height={144}
               className="w-full h-full object-cover"
-              style={{ filter: 'grayscale(100%)' }} // Mimic tintColor
+              style={{ filter: "grayscale(100%)" }} // Mimic tintColor
             />
           )}
         </label>
@@ -190,7 +199,7 @@ const CompleteProfilePage = () => {
       >
         <div>
           <label className="text-gray-500 font-medium">
-            {language ? 'नाम' : 'Full Name'}
+            {language ? "नाम" : "Full Name"}
           </label>
           <div className="relative">
             <Image
@@ -202,19 +211,21 @@ const CompleteProfilePage = () => {
             />
             <input
               type="text"
-              {...register('fullname')}
+              {...register("fullname")}
               className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={language ? 'नाम' : 'Full Name'}
+              placeholder={language ? "नाम" : "Full Name"}
             />
           </div>
           {errors.fullname && (
-            <p className="text-red-500 text-sm mt-1">{errors.fullname.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.fullname.message}
+            </p>
           )}
         </div>
 
         <div>
           <label className="text-gray-500 font-medium">
-            {language ? 'उपनाम' : 'Nickname'}
+            {language ? "उपनाम" : "Nickname"}
           </label>
           <div className="relative">
             <Image
@@ -226,19 +237,21 @@ const CompleteProfilePage = () => {
             />
             <input
               type="text"
-              {...register('nikname')}
+              {...register("nikname")}
               className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={language ? 'उपनाम' : 'Nickname'}
+              placeholder={language ? "उपनाम" : "Nickname"}
             />
           </div>
           {errors.nikname && (
-            <p className="text-red-500 text-sm mt-1">{errors.nikname.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.nikname.message}
+            </p>
           )}
         </div>
 
         <div>
           <label className="text-gray-500 font-medium">
-            {language ? 'ईमेल' : 'Email'}
+            {language ? "ईमेल" : "Email"}
           </label>
           <div className="relative">
             <Image
@@ -250,9 +263,9 @@ const CompleteProfilePage = () => {
             />
             <input
               type="text"
-              {...register('email')}
+              {...register("email")}
               className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={language ? 'ईमेल' : 'Email'}
+              placeholder={language ? "ईमेल" : "Email"}
               disabled
             />
           </div>
@@ -263,7 +276,7 @@ const CompleteProfilePage = () => {
 
         <div>
           <label className="text-gray-500 font-medium">
-            {language ? 'जन्म की तारीख' : 'Date of Birth'}
+            {language ? "जन्म की तारीख" : "Date of Birth"}
           </label>
           <div
             className="relative flex items-center bg-gray-100 rounded-xl py-3 px-5 cursor-pointer"
@@ -275,11 +288,15 @@ const CompleteProfilePage = () => {
               width={24}
               height={24}
               className="mr-4"
-              style={{ filter: 'grayscale(100%)' }}
+              style={{ filter: "grayscale(100%)" }}
             />
             <DatePicker
               selected={dob}
-              onChange={(date: Date) => setValue('dob', date)}
+              onChange={(date: Date | null) => {
+                if (date) {
+                  setValue("dob", date); // ✅ Only update if date is not null
+                }
+              }}
               dateFormat="dd/MM/yyyy"
               className="bg-transparent text-black font-semibold focus:outline-none"
               open={calendarOpen}
@@ -294,7 +311,7 @@ const CompleteProfilePage = () => {
 
         <div>
           <label className="text-gray-500 font-medium">
-            {language ? 'फ़ोन' : 'Phone'}
+            {language ? "फ़ोन" : "Phone"}
           </label>
           <div className="relative">
             <Image
@@ -306,9 +323,9 @@ const CompleteProfilePage = () => {
             />
             <input
               type="text"
-              {...register('phone')}
+              {...register("phone")}
               className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={language ? 'फ़ोन' : 'Phone'}
+              placeholder={language ? "फ़ोन" : "Phone"}
             />
           </div>
           {errors.phone && (
@@ -318,7 +335,7 @@ const CompleteProfilePage = () => {
 
         <div>
           <label className="text-gray-500 font-medium">
-            {language ? 'पता' : 'Address'}
+            {language ? "पता" : "Address"}
           </label>
           <div className="relative">
             <Image
@@ -329,20 +346,22 @@ const CompleteProfilePage = () => {
               className="absolute left-3 top-4"
             />
             <textarea
-              {...register('address')}
+              {...register("address")}
               className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={language ? 'पता' : 'Address'}
+              placeholder={language ? "पता" : "Address"}
               rows={4}
             />
           </div>
           {errors.address && (
-            <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.address.message}
+            </p>
           )}
         </div>
 
         <Button
           onPressFunction={handleSubmit(onSubmit)}
-          text={language ? 'जारी रखें' : 'Continue'}
+          text={language ? "जारी रखें" : "Continue"}
         />
       </form>
       {loading && <ActivityIndicator />}

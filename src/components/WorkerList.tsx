@@ -68,7 +68,7 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
               item?.image?.includes('googleusercontent') ||
               item?.contractor?.image?.includes('googleusercontent')
                 ? item?.image || item?.contractor?.image
-                : `https://your-storage-url.com/${item?.image || item?.contractor?.image}`
+                : `${item?.image || item?.contractor?.image}`
             }
             alt="profile"
             width={48}

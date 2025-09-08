@@ -85,12 +85,12 @@ export const userzApi = createApi({
       query: args => {
         console.log(args.body, '>>>>>>>');
         return {
-          url: '/register',
+          url: '/register-with-image',
           method: 'POST',
           body: args.body,
-          headers: {
-            'Content-type': 'application/json',
-          },
+          // headers: {
+          //   'Content-type': 'application/json',
+          // },
         };
       },
     }),
