@@ -118,6 +118,13 @@ const SignupPage = () => {
       >
         {language ? 'अपना खाता बनाएं' : 'Create your Account'}
       </h2>
+      <h2
+        className={` text-3xl sm:text-xl leading-relaxed text-center mt-2 ${
+          dark ? 'text-white' : 'text-gray-900'
+        }`}
+      >
+        अपना खाता बनाएं
+      </h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full space-y-4 max-w-md mx-auto mt-4"

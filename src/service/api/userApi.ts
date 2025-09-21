@@ -75,9 +75,9 @@ export const userzApi = createApi({
           url: `/user/${id}/become-contractor`,
           method: 'POST',
           body: data,
-          headers: {
-            'Content-type': 'multipart/form-data; charset=UTF-8',
-          },
+          // headers: {
+          //   'Content-type': 'multipart/form-data; charset=UTF-8',
+          // },
         };
       },
     }),
@@ -110,16 +110,16 @@ export const userzApi = createApi({
     }),
     updateProfile: builder.mutation({
       query: ({data, id}) => {
-        console.log(data, 'ISODE API');
+        console.log(data, 'ISIDE API');
         return {
-          url: `/update-user`,
+          url: `/update-with-image`,
           method: 'PUT',
           body: data,
        
 
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
+          // headers: {
+          //     'Content-type': 'multipart/form-data; charset=UTF-8',
+          // },
         };
       },
     }),

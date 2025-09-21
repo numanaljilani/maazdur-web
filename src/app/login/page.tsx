@@ -85,11 +85,18 @@ const LoginPage = () => {
         {language ? 'अपने अकाउंट में लॉग इन करें' : 'Mazdur'}
       </h1>
       <h1
-        className={`font-medium text-4xl leading-relaxed mb-6 text-center ${
+        className={`font-medium text-4xl leading-relaxed mb-3 text-center ${
           dark ? 'text-white' : 'text-gray-900'
         }`}
       >
         {language ? 'अपने अकाउंट में लॉग इन करें' : 'Login to your account'}
+      </h1>
+      <h1
+        className={`font-medium text-xl leading-relaxed mb-6 text-center ${
+          dark ? 'text-white' : 'text-gray-900'
+        }`}
+      >
+        अपने अकाउंट में लॉग इन करें
       </h1>
       <div className="w-full space-y-4 max-w-md mx-auto">
         <InputText

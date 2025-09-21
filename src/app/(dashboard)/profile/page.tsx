@@ -17,6 +17,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [me] = useMeMutation();
 
+  console.log(userData, "????")
+
   const fetchUserData = async () => {
     setLoading(true);
     try {
@@ -54,7 +56,7 @@ const Profile = () => {
             </h1>
           </div>
           <button
-            onClick={() => router.push('/profile')}
+            onClick={() => router.push('/edit-profile')}
             className="flex items-center gap-2 bg-purple-600 text-white py-2 px-4 rounded-full font-[Poppins-Regular] text-base"
           >
             <FaEdit size={16} />
@@ -66,13 +68,13 @@ const Profile = () => {
         <div className={`rounded-lg shadow-lg p-6 ${dark ? 'bg-gray-800' : 'bg-gray-50'}`}>
           {/* Profile Image */}
           <div className="relative w-36 h-36 mx-auto mb-6">
-            <Image
-              src={userData?.profileImage ? `https://your-storage-url.com/${userData.profileImage}` : '/icons/avatar.png'}
+            <img
+              src={userData?.image}
               alt="profile"
               width={144}
               height={144}
               className="w-full h-full rounded-full object-cover"
-              style={{ filter: userData?.profileImage ? 'none' : 'grayscale(100%)' }}
+              style={{ filter: userData?.image ? 'none' : 'grayscale(100%)' }}
             />
           </div>
 
