@@ -13,7 +13,7 @@ import WorkerList from '@/components/WorkerList';
 import { useGetContractorsMutation } from '@/service/api/userApi';
 import ActivityIndicator from '@/components/ActivityIndicator';
 import {services} from "@/constants/services"
-
+import AdBanner from '../../../components/AdBanner'
 // Mock services data (replace with your actual services constant)
 // const services = [
 //   { id: '1', english: 'Electrician', hindi: 'इलेक्ट्रीशियन' },
@@ -174,6 +174,7 @@ const HomePage = () => {
           </div>
         )}
       </div>
+        <AdBanner />
     </div>
   );
 };

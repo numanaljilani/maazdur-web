@@ -2,7 +2,6 @@
 
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
-import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { FaPhone, FaStarHalfAlt } from 'react-icons/fa';
 import { useBookmarkMutation } from '@/service/api/userApi';
@@ -53,7 +52,7 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
   const handleCall = () => {
     window.location.href = `tel:${item?.phone}`;
   };
-
+console.log(item)
   return (
     <Link
       href={`/contractor-details/${fromBookmark ? item.contractorId : item._id}?bookmarked=${item?.isBookmark || false}`}
@@ -62,13 +61,13 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
       } hover:bg-purple-100 dark:hover:bg-purple-900 transition`}
     >
       <div className="w-12 h-12 rounded-full overflow-hidden">
-        {item?.image || item?.contractor?.image ? (
-          <Image
+        {item?.image  ? (
+          <img
             src={
-              item?.image?.includes('googleusercontent') ||
-              item?.contractor?.image?.includes('googleusercontent')
-                ? item?.image || item?.contractor?.image
-                : `${item?.image || item?.contractor?.image}`
+             
+              
+                item?.image
+                
             }
             alt="profile"
             width={48}
@@ -77,7 +76,7 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
             
           />
         ) : (
-          <Image
+          <img
             src="/user.png"
             alt="user"
             width={48}
@@ -94,7 +93,7 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
               {item?.service || 'Electrician'}
             </span>
             {/* <button onClick={(e) => { e.preventDefault(); addToBookmarks(); }} className="ml-2">
-              <Image
+              <img
                 src={fromBookmark || item?.isBookmark ? '/icons/bookmark.png' : '/icons/bookmark1.png'}
                 alt="bookmark"
                 width={28}

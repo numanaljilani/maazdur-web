@@ -15,6 +15,41 @@ import { useCompleteProfileMutation } from "@/service/api/userApi";
 import Button from "@/components/Button";
 import ActivityIndicator from "@/components/ActivityIndicator";
 
+// Leaflet imports
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// Fix for default markers in react-leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
+
+// Simple function to format coordinates as address
+const getLocationDescription = (lat: number, lng: number): string => {
+  return `Selected Location - Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`;
+};
+
+// Custom hook for map events
+function LocationMarker({ onLocationSelect }: { onLocationSelect: (lat: number, lng: number, address: string) => void }) {
+  const [position, setPosition] = useState<L.LatLng | null>(null);
+
+  const map = useMapEvents({
+    click(e) {
+      const { lat, lng } = e.latlng;
+      setPosition(e.latlng);
+      
+      const locationDescription = getLocationDescription(lat, lng);
+      onLocationSelect(lat, lng, locationDescription);
+    },
+  });
+
+  return position === null ? null : <Marker position={position} />;
+}
+
 // Placeholder icons; replace with your actual icon paths
 const icons = {
   back: "/back.png",
@@ -35,6 +70,8 @@ const profileSchema = z.object({
   phone: z.string().optional(),
   address: z.string().optional(),
   dob: z.date().optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -44,6 +81,9 @@ const CompleteProfilePage = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [mapPosition, setMapPosition] = useState<[number, number]>([20.5937, 78.9629]); // Default to India
+  const [showMap, setShowMap] = useState(false);
+  
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -78,6 +118,60 @@ const CompleteProfilePage = () => {
     }
   };
 
+  const handleLocationSelect = (lat: number, lng: number, address: string) => {
+    setValue("latitude", lat);
+    setValue("longitude", lng);
+    setValue("address", address);
+    setMapPosition([lat, lng]);
+  };
+
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setMapPosition([latitude, longitude]);
+          setValue("latitude", latitude);
+          setValue("longitude", longitude);
+          
+          const locationDescription = getLocationDescription(latitude, longitude);
+          setValue("address", locationDescription);
+          
+          toast.success("Location found successfully!", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          let errorMessage = "Could not get your location";
+          
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage = "Location access denied. Please enable location permissions.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage = "Location information unavailable.";
+              break;
+            case error.TIMEOUT:
+              errorMessage = "Location request timed out.";
+              break;
+          }
+          
+          toast.error(errorMessage, {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by this browser", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
+
   const onSubmit = async (formData: ProfileFormData) => {
     setLoading(true);
     try {
@@ -97,6 +191,8 @@ const CompleteProfilePage = () => {
           formData?.dob?.toISOString()?.split("T")[0]
         );
       }
+      if (formData.latitude) formDataToSend.append("latitude", formData.latitude.toString());
+      if (formData.longitude) formDataToSend.append("longitude", formData.longitude.toString());
 
       const response: any = await completeProfile({ body: formDataToSend });
       if (response.error) {
@@ -212,7 +308,9 @@ const CompleteProfilePage = () => {
             <input
               type="text"
               {...register("fullname")}
-              className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className={`w-full p-3 pl-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 ${
+                dark ? "bg-gray-800 border-gray-700 text-white" : "border-gray-300 text-gray-900"
+              }`}
               placeholder={language ? "नाम" : "Full Name"}
             />
           </div>
@@ -238,7 +336,9 @@ const CompleteProfilePage = () => {
             <input
               type="text"
               {...register("nikname")}
-              className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className={`w-full p-3 pl-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 ${
+                dark ? "bg-gray-800 border-gray-700 text-white" : "border-gray-300 text-gray-900"
+              }`}
               placeholder={language ? "उपनाम" : "Nickname"}
             />
           </div>
@@ -264,7 +364,9 @@ const CompleteProfilePage = () => {
             <input
               type="text"
               {...register("email")}
-              className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className={`w-full p-3 pl-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 ${
+                dark ? "bg-gray-800 border-gray-700 text-white" : "border-gray-300 text-gray-900 bg-gray-100"
+              }`}
               placeholder={language ? "ईमेल" : "Email"}
               disabled
             />
@@ -279,7 +381,9 @@ const CompleteProfilePage = () => {
             {language ? "जन्म की तारीख" : "Date of Birth"}
           </label>
           <div
-            className="relative flex items-center bg-gray-100 rounded-xl py-3 px-5 cursor-pointer"
+            className={`relative flex items-center rounded-xl py-3 px-5 cursor-pointer ${
+              dark ? "bg-gray-800" : "bg-gray-100"
+            }`}
             onClick={() => setCalendarOpen(true)}
           >
             <Image
@@ -294,11 +398,13 @@ const CompleteProfilePage = () => {
               selected={dob}
               onChange={(date: Date | null) => {
                 if (date) {
-                  setValue("dob", date); // ✅ Only update if date is not null
+                  setValue("dob", date);
                 }
               }}
               dateFormat="dd/MM/yyyy"
-              className="bg-transparent text-black font-semibold focus:outline-none"
+              className={`bg-transparent font-semibold focus:outline-none ${
+                dark ? "text-white" : "text-black"
+              }`}
               open={calendarOpen}
               onClickOutside={() => setCalendarOpen(false)}
               onSelect={() => setCalendarOpen(false)}
@@ -324,7 +430,9 @@ const CompleteProfilePage = () => {
             <input
               type="text"
               {...register("phone")}
-              className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className={`w-full p-3 pl-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 ${
+                dark ? "bg-gray-800 border-gray-700 text-white" : "border-gray-300 text-gray-900"
+              }`}
               placeholder={language ? "फ़ोन" : "Phone"}
             />
           </div>
@@ -347,7 +455,9 @@ const CompleteProfilePage = () => {
             />
             <textarea
               {...register("address")}
-              className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className={`w-full p-3 pl-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 ${
+                dark ? "bg-gray-800 border-gray-700 text-white" : "border-gray-300 text-gray-900"
+              }`}
               placeholder={language ? "पता" : "Address"}
               rows={4}
             />
@@ -357,6 +467,57 @@ const CompleteProfilePage = () => {
               {errors.address.message}
             </p>
           )}
+        </div>
+
+        {/* Map Section */}
+        <div>
+          <label className="text-gray-500 font-medium mb-2 block">
+            {language ? "अपना स्थान चुनें" : "Select Your Location"}
+          </label>
+          
+          <div className="flex gap-2 mb-3 flex-wrap">
+            <button
+              type="button"
+              onClick={() => setShowMap(!showMap)}
+              className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors flex-1 min-w-[120px]"
+            >
+              {showMap 
+                ? (language ? "मानचित्र छिपाएं" : "Hide Map") 
+                : (language ? "मानचित्र दिखाएं" : "Show Map")
+              }
+            </button>
+            
+            <button
+              type="button"
+              onClick={getUserLocation}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex-1 min-w-[120px]"
+            >
+              {language ? "मेरा स्थान" : "My Location"}
+            </button>
+          </div>
+
+          {showMap && (
+            <div className="h-64 w-full rounded-md overflow-hidden border border-gray-300">
+              <MapContainer
+                center={mapPosition}
+                zoom={13}
+                style={{ height: "100%", width: "100%" }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <LocationMarker onLocationSelect={handleLocationSelect} />
+              </MapContainer>
+            </div>
+          )}
+          
+          <p className="text-sm text-gray-500 mt-2">
+            {language 
+              ? "मानचित्र पर क्लिक करके अपना स्थान चुनें या 'मेरा स्थान' बटन दबाएं" 
+              : "Click on the map to select your location or press 'My Location' button"
+            }
+          </p>
         </div>
 
         <Button
