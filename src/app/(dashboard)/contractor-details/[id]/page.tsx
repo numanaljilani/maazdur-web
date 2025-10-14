@@ -25,8 +25,6 @@ const WorkDetails = ({  }: {  }) => {
   const [posts, setPosts] = useState([]);
   const [reviewsData, setReviewsData] = useState([]);
   const [getContractorDetails, { data, isSuccess, isError, error }] = useContractorDetailsMutation();
-//   const [getPosts] = useGetPostsMutation();
-//   const [createPost] = useCreatePostMutation();
   const [uploadPost] = useUploadPostMutation();
   const [addToBookmark] = useBookmarkMutation();
 
@@ -48,18 +46,6 @@ const WorkDetails = ({  }: {  }) => {
     }
     setLoading(false);
   };
-
-//   const getPostsData = async () => {
-//     try {
-//       const res: any = await getPosts({ contractorId: params.id, take: 20, skip: 0 });
-//       if (res.data) {
-//         setPosts(res.data.images || []);
-//         setReviewsData(res.data.getPosts || []);
-//       }
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
 
   const addToBookmarks = async () => {
     try {
@@ -85,34 +71,6 @@ const WorkDetails = ({  }: {  }) => {
     }
   };
 
-//   const postReview = async () => {
-//     try {
-//       const res: any = await createPost({
-//         contractorId: contractorDetails?.id,
-//         rating: rating.toString(),
-//         serviceId: '123444', // Replace with actual serviceId
-//         text,
-//       });
-//       if (res.data) {
-//         getPostsData();
-//         setText('');
-//         setRating(1);
-//         toast.success('Review posted successfully', {
-//           position: 'top-right',
-//           autoClose: 3000,
-//         });
-//       } else {
-//         toast.error(res.error?.data?.message || 'Failed to post review', {
-//           position: 'top-right',
-//           autoClose: 3000,
-//         });
-//       }
-//     } catch (err) {
-//       console.error(err);
-//       toast.error('Something went wrong', { position: 'top-right', autoClose: 3000 });
-//     }
-//   };
-
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -124,7 +82,6 @@ const WorkDetails = ({  }: {  }) => {
     try {
       const res: any = await uploadPost({ body: formData, token: userData.accessToken });
       if (res.data) {
-        // getPostsData();
         toast.success('Image uploaded successfully', {
           position: 'top-right',
           autoClose: 3000,
@@ -147,7 +104,6 @@ const WorkDetails = ({  }: {  }) => {
 
   useEffect(() => {
     getDetails();
-    // getPostsData();
   }, []);
 
   const ReadMoreText: React.FC<{ children: string; maxChars: number }> = ({ children, maxChars }) => {
@@ -156,11 +112,14 @@ const WorkDetails = ({  }: {  }) => {
 
     return (
       <div>
-        <p className={`${dark ? 'text-white' : 'text-gray-900'} text-sm`}>
+        <p className={`${dark ? 'text-white' : 'text-gray-900'} text-sm md:text-base`}>
           {isExpanded ? children : truncatedText}
         </p>
         {children.length > maxChars && (
-          <button onClick={() => setIsExpanded(!isExpanded)} className="text-blue-500 text-sm">
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)} 
+            className="text-blue-500 text-sm mt-1 hover:text-blue-600 transition-colors"
+          >
             {isExpanded ? 'Read less' : 'Read more'}
           </button>
         )}
@@ -174,14 +133,16 @@ const WorkDetails = ({  }: {  }) => {
     handlePress,
   }) => {
     return (
-      <div className="flex space-x-2 overflow-x-auto py-2">
+      <div className="flex space-x-2 overflow-x-auto py-2 scrollbar-hide">
         {values.map((value, index) => (
           <button
             key={index}
             onClick={() => handlePress(value)}
-            className={`px-4 py-2 rounded-full border-2 border-purple-600 text-sm font-medium ${
-              isPressed === value ? 'bg-purple-600 text-white' : 'bg-white text-purple-600 dark:bg-gray-700 dark:text-white'
-            }`}
+            className={`px-3 py-2 rounded-full border-2 border-purple-600 text-xs sm:text-sm font-medium whitespace-nowrap min-w-max ${
+              isPressed === value 
+                ? 'bg-purple-600 text-white' 
+                : 'bg-white text-purple-600 dark:bg-gray-700 dark:text-white'
+            } transition-colors duration-200`}
           >
             {value}
           </button>
@@ -191,74 +152,89 @@ const WorkDetails = ({  }: {  }) => {
   };
 
   return (
-    <div className={` ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} relative mb-10`}>
+    <div className={`min-h-screen ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} relative pb-20`}>
       {loading ? (
-        <div>
-        <ActivityIndicator />
+        <div className="flex justify-center items-center min-h-screen">
+          <ActivityIndicator />
         </div>
       ) : (
         <>
           {/* Back Button */}
-          {/* <button onClick={() => router.back()} className="absolute top-4 left-4 z-10">
-            <FaArrowLeft size={24} className={`${dark ? 'text-white' : 'text-gray-900'}`} />
-          </button> */}
+          <button 
+            onClick={() => router.back()} 
+            className="absolute top-4 left-4 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full p-2 shadow-lg"
+          >
+            <FaArrowLeft size={20} className={`${dark ? 'text-white' : 'text-gray-900'}`} />
+          </button>
 
           {/* Image Carousel */}
-          <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px]">
-            <div className="flex h-[50vh] md:h-[80vh] w-full  items-center justify-center">
+          <div className="relative w-full h-[250px] xs:h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px]">
+            <div className="flex w-full h-full items-center justify-center">
               <img
                 src={
-               'https://plus.unsplash.com/premium_photo-1664299941780-e8badc0b1617?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29uc3RydWN0aW9uJTIwd29ya2VyfGVufDB8fDB8fHww'} // Replace with your storage URL}
+                  contractorDetails?.image 
+                    ? contractorDetails.image 
+                    : 'https://plus.unsplash.com/premium_photo-1664299941780-e8badc0b1617?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29uc3RydWN0aW9uJTIwd29ya2VyfGVufDB8fDB8fHww'
+                }
                 alt="contractor"
-                width={500}
-                height={300}
-                className="w-full h-full  rounded-2xl overflow-hidden object-cover"
-                onError={() => console.error('Failed to load contractor image')}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://plus.unsplash.com/premium_photo-1664299941780-e8badc0b1617?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29uc3RydWN0aW9uJTIwd29ya2VyfGVufDB8fDB8fHww';
+                }}
               />
             </div>
           </div>
 
           {/* Contractor Info */}
-          <div className="mt-4 px-4">
-            <div className="flex justify-between items-center">
-              <h1 className={`text-2xl sm:text-3xl font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
-                {contractorDetails?.service || '-'}
-              </h1>
-              <button onClick={addToBookmarks}>
+          <div className="mt-4 px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex-1 min-w-0">
+                <h1 className={`text-xl xs:text-2xl sm:text-3xl font-semibold truncate ${dark ? 'text-white' : 'text-gray-900'}`}>
+                  {contractorDetails?.service || '-'}
+                </h1>
+                <div className="flex flex-col xs:flex-row xs:items-center gap-1 xs:gap-2 mt-1">
+                  <p className="text-purple-600 text-base font-semibold truncate">{contractorDetails?.fullname || '-'}</p>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="/star.png"
+                      alt="star"
+                      width={20}
+                      height={20}
+                      className={`${dark ? 'filter invert' : ''}`}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    <p className={`text-sm ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {contractorDetails?.rating || 5} ({contractorDetails?.rewies || 0} reviews)
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <button 
+                onClick={addToBookmarks}
+                className="flex-shrink-0 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+              >
                 <FaBookmark
-                  size={30}
+                  size={28}
                   className={bookmark ? 'text-purple-600' : 'text-gray-400'}
                 />
               </button>
             </div>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <p className="text-purple-600 text-base font-semibold">{contractorDetails?.fullname || '-'}</p>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/star.png"
-                  alt="star"
-                  width={24}
-                  height={24}
-                  className={`${dark ? 'filter invert' : ''}`}
-                  onError={() => console.error('Failed to load star icon')}
-                />
-                <p className={`text-sm ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
-                  {contractorDetails?.rating || 5} ({contractorDetails?.rewies || 0} reviews)
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-2 mt-2">
-              <span className="bg-purple-100 text-purple-600 text-xs font-medium px-2 py-1 rounded-lg">
+            
+            <div className="flex flex-col sm:flex-row gap-2 mt-3">
+              <span className="bg-purple-100 text-purple-600 text-xs font-medium px-3 py-1.5 rounded-lg w-fit">
                 {contractorDetails?.service || ''}
               </span>
               <div className="flex items-center gap-2">
-                <FaMapMarkerAlt size={20} className="text-purple-600" />
-                <p className={`text-xs ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <FaMapMarkerAlt size={18} className="text-purple-600 flex-shrink-0" />
+                <p className={`text-xs ${dark ? 'text-gray-300' : 'text-gray-600'} truncate`}>
                   {contractorDetails?.address || '-'}
                 </p>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row justify-between items-center mt-2">
+            
+            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-2 mt-3">
               <div className="flex items-center gap-2">
                 <p className="text-purple-600 text-2xl sm:text-3xl font-semibold">₹ {contractorDetails?.price || ''}</p>
                 <p className={`text-sm ${dark ? 'text-gray-300' : 'text-gray-600'}`}>({contractorDetails?.unit || ''})</p>
@@ -268,37 +244,43 @@ const WorkDetails = ({  }: {  }) => {
           </div>
 
           {/* About */}
-          <div className="px-4">
-            <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'} mb-2`}>About me</h2>
-            <ReadMoreText maxChars={80}>{contractorDetails?.about || ''}</ReadMoreText>
+          <div className="px-4 sm:px-6 lg:px-8">
+            <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'} mb-3`}>About me</h2>
+            <ReadMoreText maxChars={120}>{contractorDetails?.about || ''}</ReadMoreText>
           </div>
 
           {/* Photos & Videos */}
-          <div className="px-4 mt-4">
-            {/* <div className="flex justify-between items-center">
-              <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'} mb-2`}>Photos & Videos</h2>
+          <div className="px-4 sm:px-6 lg:px-8 mt-6">
+            <div className="flex justify-between items-center mb-3">
+              <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>Photos & Videos</h2>
               {posts.length > 0 && (
-                <Link href={`/dashboard/more-posts?contractorId=${params.id}`} className="text-purple-600 font-semibold">
+                <Link 
+                  href={`/dashboard/more-posts?contractorId=${params.id}`} 
+                  className="text-purple-600 font-semibold text-sm hover:text-purple-700 transition-colors"
+                >
                   See all
                 </Link>
               )}
-            </div> */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            </div>
+            
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
               {posts.slice(0, 5).map((item: any, index: number) => (
-                <img
-                  key={index}
-                  src={`https://your-storage-url.com/${item.imageurl}`} // Replace with your storage URL
-                  alt="post"
-                  width={150}
-                  height={130}
-                  className="rounded-lg object-contain"
-                  onError={() => console.error('Failed to load post image')}
-                />
+                <div key={index} className="aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+                  <img
+                    src={item.imageurl || '/placeholder-image.jpg'}
+                    alt="post"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder-image.jpg';
+                    }}
+                  />
+                </div>
               ))}
             </div>
+            
             {userData._id === params.id && (
               <div className="mt-4 flex justify-end">
-                <label className="bg-gray-200 dark:bg-gray-700 rounded-lg w-1/2 sm:w-1/4 py-8 flex justify-center items-center cursor-pointer">
+                <label className="bg-gray-200 dark:bg-gray-700 rounded-lg w-full xs:w-1/2 sm:w-1/3 md:w-1/4 py-8 flex justify-center items-center cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
                   <span className="text-4xl text-gray-400">+</span>
                   <input type="file" className="hidden" accept="image/*" onChange={uploadImage} />
                 </label>
@@ -307,32 +289,46 @@ const WorkDetails = ({  }: {  }) => {
           </div>
 
           {/* Reviews */}
-          <div className="px-4 mt-6">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
+          <div className="px-4 sm:px-6 lg:px-8 mt-8">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-3">
                 <img
                   src="/star.png"
                   alt="star"
-                  width={32}
-                  height={32}
+                  width={28}
+                  height={28}
                   className={`${dark ? 'filter invert' : ''}`}
-                  onError={() => console.error('Failed to load star icon')}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
                 <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
                   {contractorDetails?.rating || 5} ({contractorDetails?.rewies || 0} reviews)
                 </h2>
               </div>
-              {/* <Link href={`/dashboard/reviews?contractorId=${params.id}`} className="text-purple-600 font-semibold">
-                See all
-              </Link> */}
+              {reviewsData.length > 0 && (
+                <Link 
+                  href={`/dashboard/reviews?contractorId=${params.id}`} 
+                  className="text-purple-600 font-semibold text-sm hover:text-purple-700 transition-colors"
+                >
+                  See all
+                </Link>
+              )}
             </div>
 
             {searchParams.get('canPost') === 'true' && (
-              <div className="border border-gray-400 dark:border-gray-600 p-4 rounded-3xl mt-4">
-                <div className="flex gap-2">
+              <div className="border border-gray-300 dark:border-gray-600 p-4 rounded-2xl sm:rounded-3xl mt-4 mb-6">
+                <div className="flex gap-1 sm:gap-2 justify-center sm:justify-start">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <button key={star} onClick={() => setRating(star)}>
-                      <FaStar size={25} className={rating >= star ? 'text-purple-600' : 'text-gray-400'} />
+                    <button 
+                      key={star} 
+                      onClick={() => setRating(star)}
+                      className="p-1 hover:scale-110 transition-transform"
+                    >
+                      <FaStar 
+                        size={22} 
+                        className={rating >= star ? 'text-purple-600' : 'text-gray-400'} 
+                      />
                     </button>
                   ))}
                 </div>
@@ -341,62 +337,75 @@ const WorkDetails = ({  }: {  }) => {
                   placeholder="Post your comment"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  className={`w-full mt-4 p-2 rounded-lg ${dark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'} focus:outline-none focus:ring-2 focus:ring-purple-600`}
+                  className={`w-full mt-4 p-3 rounded-lg text-sm sm:text-base ${
+                    dark 
+                      ? 'bg-gray-700 text-white placeholder-gray-400' 
+                      : 'bg-gray-100 text-gray-900 placeholder-gray-500'
+                  } focus:outline-none focus:ring-2 focus:ring-purple-600 transition-colors`}
                 />
-                <button
-                //   onClick={postReview}
-                  className="bg-purple-600 text-white py-2 px-4 rounded-lg mt-3 self-end"
-                >
-                  Post
-                </button>
+                <div className="flex justify-end mt-3">
+                  <button
+                    // onClick={postReview}
+                    className="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
+                  >
+                    Post
+                  </button>
+                </div>
               </div>
             )}
 
-            <div className="mt-4">
+            <div className="space-y-4">
               {reviewsData.map((item: any, index: number) => (
-                <div key={index} className="mb-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={item?.user?.image ? `https://your-storage-url.com/${item.user.image}` : '/avatar.png'}
-                        alt="user"
-                        width={32}
-                        height={32}
-                        className="rounded-full"
-                        onError={() => console.error('Failed to load review user image')}
-                      />
-                      <p className={`${dark ? 'text-white' : 'text-gray-900'} text-sm`}>{item?.user?.fullname}</p>
+                <div key={index} className="pb-4 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                  <div className="flex justify-between items-start gap-3">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className="flex-shrink-0 w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
+                        <img
+                          src={item?.user?.image || '/avatar.png'}
+                          alt="user"
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = '/avatar.png';
+                          }}
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={`${dark ? 'text-white' : 'text-gray-900'} text-sm font-medium truncate`}>
+                          {item?.user?.fullname || 'Anonymous'}
+                        </p>
+                        <p className={`${dark ? 'text-gray-300' : 'text-gray-600'} text-xs mt-1`}>
+                          {item.text}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button className="border border-purple-600 text-purple-600 px-2 py-1 rounded-full text-xs">
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="border border-purple-600 text-purple-600 px-2 py-1 rounded-full text-xs font-medium">
                         {item.rating}
-                      </button>
+                      </span>
                     </div>
                   </div>
-                  <p className={`${dark ? 'text-white' : 'text-gray-900'} text-sm mt-1`}>{item.text}</p>
                 </div>
               ))}
             </div>
-            <div className="border-b border-gray-300 dark:border-gray-600 my-4" />
+            
+            {reviewsData.length > 0 && (
+              <div className="border-b border-gray-300 dark:border-gray-600 my-6" />
+            )}
           </div>
 
-          {/* Call Button */}
-          <div className="fixed bottom-4 left-4 text right-4 flex justify-center">
-            <button
-              onClick={handleCall}
-              className="flex-1 flex items-center justify-center border bg-white border-purple-600 text-purple-600 py-3 rounded-full sm:w-1/2"
-            >
-              <img
-                src="/phone.png"
-                color='#9810fa'
-                alt="phone"
-                width={20}
-                height={20}
-                className={`${dark ? 'filter invert' : ''}`}
-                onError={() => console.error('Failed to load phone icon')}
-              />
-              <span className="ml-2 text-base">Call</span>
-            </button>
+          {/* Call Button - Fixed Bottom */}
+          <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-white via-white/95 to-transparent dark:from-gray-900 dark:via-gray-900/95 dark:to-transparent">
+            <div className="max-w-4xl mx-auto">
+              <button
+                onClick={handleCall}
+                className="w-full flex items-center justify-center bg-white border-2 border-purple-600 text-purple-600 py-4 px-6 rounded-2xl hover:bg-purple-50 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200 shadow-lg"
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <FaPhone size={20} className="text-purple-600" />
+                  <span className="text-lg font-semibold">Call Now</span>
+                </div>
+              </button>
+            </div>
           </div>
         </>
       )}

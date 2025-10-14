@@ -23,7 +23,7 @@ const SubCategories = () => {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className={`flex items-center gap-3 mb-6 ${dark ? 'bg-gray-900' : 'bg-white'}`}>
-          <button onClick={() => router.push('/dashboard')}>
+          <button onClick={() => router.push('/home')}>
             <FaArrowLeft
               size={24}
               className={dark ? 'text-white' : 'text-gray-900'}
@@ -43,7 +43,7 @@ const SubCategories = () => {
                 dark ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'
               }`}
               onClick={() =>
-                router.push(`/dashboard/contractor-list?service=${service}&sub=${item.english}`)
+                router.push(`/contractor-list?service=${service}&sub=${item.english}`)
               }
             >
               <p className={`text-lg font-[Poppins-SemiBold] ${dark ? 'text-white' : 'text-gray-900'}`}>
