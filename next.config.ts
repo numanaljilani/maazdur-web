@@ -1,14 +1,7 @@
 import type { NextConfig } from 'next'
-import withPWA from 'next-pwa'
 
-const nextConfig: NextConfig = {
-  reactStrictMode: true,
-  images: {
-    domains: ['your-domain.com'], // Add your domains here
-  },
-}
-
-const pwaConfig = withPWA({
+// Use require instead of import for next-pwa
+const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
@@ -16,7 +9,7 @@ const pwaConfig = withPWA({
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,
-      handler: 'CacheFirst',
+      handler: 'CacheFirst' as const,
       options: {
         cacheName: 'google-fonts-webfonts',
         expiration: {
@@ -27,7 +20,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /^https:\/\/fonts\.(?:googleapis)\.com\/.*/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'StaleWhileRevalidate' as const,
       options: {
         cacheName: 'google-fonts-stylesheets',
         expiration: {
@@ -38,7 +31,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'StaleWhileRevalidate' as const,
       options: {
         cacheName: 'static-font-assets',
         expiration: {
@@ -49,7 +42,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'StaleWhileRevalidate' as const,
       options: {
         cacheName: 'static-image-assets',
         expiration: {
@@ -60,7 +53,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /\/_next\/image\?url=.+$/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'StaleWhileRevalidate' as const,
       options: {
         cacheName: 'next-image',
         expiration: {
@@ -71,7 +64,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /\.(?:js)$/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'StaleWhileRevalidate' as const,
       options: {
         cacheName: 'static-js-assets',
         expiration: {
@@ -82,7 +75,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /\.(?:css)$/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'StaleWhileRevalidate' as const,
       options: {
         cacheName: 'static-style-assets',
         expiration: {
@@ -93,7 +86,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /\/_next\/data\/.+\/.+\.json$/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'StaleWhileRevalidate' as const,
       options: {
         cacheName: 'next-data',
         expiration: {
@@ -104,7 +97,7 @@ const pwaConfig = withPWA({
     },
     {
       urlPattern: /\.(?:json|xml|csv)$/i,
-      handler: 'NetworkFirst',
+      handler: 'NetworkFirst' as const,
       options: {
         cacheName: 'static-data-assets',
         expiration: {
@@ -112,27 +105,15 @@ const pwaConfig = withPWA({
           maxAgeSeconds: 24 * 60 * 60
         }
       }
-    },
-    {
-      urlPattern: ({ url }) => {
-        const isSameOrigin = self.origin === url.origin
-        if (!isSameOrigin) return false
-        const pathname = url.pathname
-        if (pathname.startsWith('/api/auth')) return false
-        return pathname.startsWith('/api')
-      },
-      handler: 'NetworkFirst',
-      method: 'GET',
-      options: {
-        cacheName: 'apis',
-        expiration: {
-          maxEntries: 16,
-          maxAgeSeconds: 24 * 60 * 60
-        },
-        networkTimeoutSeconds: 10
-      }
     }
   ]
 })
 
-export default pwaConfig(nextConfig)
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['your-domain.com'],
+  },
+}
+
+export default withPWA(nextConfig)
