@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import Sidebar from '@/components/Sidebar';
 import Image from 'next/image';
 import { Poppins } from 'next/font/google';
+import BottomTabs from '@/components/Sidebar';
 
 
 const inter = Poppins({ subsets: ["latin"], weight: "500" });
@@ -23,7 +23,7 @@ export default function DashboardLayout({
   return (
     <div className={`min-h-screen flex ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} ${inter.className}`}>
       {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      {/* <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} /> */}
 
       {/* Overlay for mobile when sidebar is open */}
       {sidebarOpen && (
@@ -36,7 +36,7 @@ export default function DashboardLayout({
       {/* Main Content */}
       <main className="flex-1 p-6 overflow-y-auto">
         {/* Hamburger Menu for Mobile */}
-        <button
+        {/* <button
           className="sm:hidden mb-4 p-2 rounded-md bg-gray-200 dark:bg-gray-700"
           onClick={toggleSidebar}
         >
@@ -47,8 +47,10 @@ export default function DashboardLayout({
             height={24}
             className={dark ? 'filter invert' : ''}
           />
-        </button>
+        </button> */}
         {children}
+
+         <BottomTabs />
       </main>
     </div>
   );
