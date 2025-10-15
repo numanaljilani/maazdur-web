@@ -146,10 +146,10 @@ const WorkDetailsInput = () => {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center py-6">
-          <h1 className="text-xl sm:text-2xl font-[Poppins-SemiBold] text-purple-700">
+          <h1 className="text-xl sm:text-2xl font-font-semibold text-purple-700">
             {language ? 'ठेकेदार पंजीकरण' : 'Contractor Registration'}
           </h1>
-          <p className="text-sm text-gray-500 font-[Poppins-Regular] mt-2">
+          <p className="text-sm text-gray-500 font-font-regular mt-2">
             {language
               ? 'अपनी पहुंच बढ़ाने, ग्राहकों को आसानी से प्रबंधित करने और अपने व्यवसाय को सहजता से बढ़ाने के लिए एक सेवा प्रदाता के रूप में हमसे जुड़ें।'
               : 'Join us as a service provider to expand your reach, manage clients easily, and grow your business effortlessly.'}
@@ -241,7 +241,7 @@ const WorkDetailsInput = () => {
 
           <button
             onClick={registerContractor}
-            className="w-full bg-purple-600 text-white py-3 rounded-full font-[Poppins-Medium] text-lg tracking-wider"
+            className="w-full bg-purple-600 text-white py-3 rounded-full font-medium text-lg tracking-wider"
           >
             {language ? 'जारी रखें' : 'Continue'}
           </button>
@@ -249,7 +249,7 @@ const WorkDetailsInput = () => {
           {userData.isContractor && (
             <button
               onClick={() => router.push(`/contractor-details/${userData._id}`)}
-              className="w-full bg-purple-600 text-white py-3 rounded-full mt-2 font-[Poppins-Medium] text-lg tracking-wider"
+              className="w-full bg-purple-600 text-white py-3 rounded-full mt-2 font-medium text-lg tracking-wider"
             >
               {language ? 'प्रोफाइल देखें' : 'View Profile'}
             </button>

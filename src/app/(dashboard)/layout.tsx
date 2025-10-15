@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Sidebar from '@/components/Sidebar';
 import Image from 'next/image';
+import { Poppins } from 'next/font/google';
 
+
+const inter = Poppins({ subsets: ["latin"], weight: "500" });
 export default function DashboardLayout({
   children,
 }: {
@@ -18,7 +21,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className={`min-h-screen flex ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+    <div className={`min-h-screen flex ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} ${inter.className}`}>
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 

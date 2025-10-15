@@ -82,26 +82,15 @@ const ContractorListScreen = () => {
 
   return (
     <div
-      className={`min-h-screen ${
+      className={`min-h-screen w-full  ${
         dark ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       }`}
     >
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-inherit border-b border-gray-300 dark:border-gray-700">
+      <div className="sticky  flex justify-center items-center -top-5 z-10 bg-inherit border-b border-gray-300 dark:border-gray-700">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 py-4 gap-4">
           <div className="flex items-center gap-4 w-full sm:w-auto">
-            <button
-              onClick={() => router.back()}
-              className="flex-shrink-0 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-            >
-              <Image
-                src={icons.back}
-                alt="back"
-                width={28}
-                height={28}
-                className={dark ? "filter invert" : ""}
-              />
-            </button>
+           
 
             <div className="min-w-0 flex-1">
               <h1
@@ -110,7 +99,7 @@ const ContractorListScreen = () => {
                 }`}
               >
                 {service && subService
-                  ? `${service} - ${subService}`
+                  ? ` ${subService}`
                   : searchQuery}
               </h1>
               <p
@@ -123,17 +112,17 @@ const ContractorListScreen = () => {
             </div>
           </div>
 
-          <button className="flex-shrink-0 p-3 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors self-end sm:self-auto">
+          {/* <button className="flex-shrink-0 p-3 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors self-end sm:self-auto">
             <FaSearch
               size={20}
               className={dark ? "text-white" : "text-gray-600"}
             />
-          </button>
+          </button> */}
         </div>
       </div>
 
       {/* Content */}
-      <div className="px-4 sm:px-6 py-4">
+      <div className="px-4 sm:px-6  py-4">
         {loading ? (
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>

@@ -81,10 +81,8 @@ const PrivacyPolicy = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-5 mb-6">
-          <button onClick={() => router.back()} className="flex items-center">
-            <FaArrowLeft size={24} className={`${dark ? 'text-white' : 'text-gray-900'}`} />
-          </button>
-          <h1 className={`text-xl sm:text-2xl font-[Poppins-Medium] ${dark ? 'text-white' : 'text-gray-900'}`}>
+     
+          <h1 className={`text-xl sm:text-2xl font-medium ${dark ? 'text-white' : 'text-gray-900'}`}>
             {content.title}
           </h1>
         </div>
@@ -92,10 +90,10 @@ const PrivacyPolicy = () => {
         {/* Content Sections */}
         {content.sections.map((section, index) => (
           <div key={index} className="py-2">
-            <h2 className={`text-base sm:text-lg font-[Poppins-Medium] ${dark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-base sm:text-lg font-medium ${dark ? 'text-white' : 'text-gray-900'}`}>
               {section.heading}
             </h2>
-            <p className={`text-sm sm:text-base font-[Poppins-Light] ${dark ? 'text-gray-300' : 'text-gray-600'} mt-1`}>
+            <p className={`text-sm sm:text-base font-light ${dark ? 'text-gray-300' : 'text-gray-600'} mt-1`}>
               {section.text}
             </p>
           </div>

@@ -98,14 +98,9 @@ const Bookmarks = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-5">
-            <button onClick={() => router.push("/home")}>
-              <FaArrowLeft
-                size={24}
-                className={`${dark ? "text-white" : "text-gray-900"}`}
-              />
-            </button>
+            
             <h1
-              className={`text-xl sm:text-2xl font-[Poppins-SemiBold] ${
+              className={`text-xl sm:text-2xl font-semibold ${
                 dark ? "text-white" : "text-gray-900"
               }`}
             >

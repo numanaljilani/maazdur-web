@@ -152,7 +152,7 @@ const WorkDetails = ({  }: {  }) => {
   };
 
   return (
-    <div className={`min-h-screen ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} relative pb-20`}>
+    <div className={`min-h-screen relative ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} relative pb-20`}>
       {loading ? (
         <div className="flex justify-center items-center min-h-screen">
           <ActivityIndicator />
@@ -160,12 +160,7 @@ const WorkDetails = ({  }: {  }) => {
       ) : (
         <>
           {/* Back Button */}
-          <button 
-            onClick={() => router.back()} 
-            className="absolute top-4 left-4 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full p-2 shadow-lg"
-          >
-            <FaArrowLeft size={20} className={`${dark ? 'text-white' : 'text-gray-900'}`} />
-          </button>
+         
 
           {/* Image Carousel */}
           <div className="relative w-full h-[250px] xs:h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px]">

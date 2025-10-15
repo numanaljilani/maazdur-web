@@ -143,6 +143,16 @@ const LoginPage = () => {
           </span>
         </Link>
       </div>
+      <div className="mt-8 text-center">
+        <Link href="/home">
+          <span className="text-gray-500 font-medium">
+            
+            <span className="text-purple-600 tracking-wider font-medium">
+              {language ? 'साइन अप करें' : 'Continue as guest'}
+            </span>
+          </span>
+        </Link>
+      </div>
       {loading && <ActivityIndicator />}
     </div>
   );

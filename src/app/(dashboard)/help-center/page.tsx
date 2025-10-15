@@ -44,10 +44,8 @@ const HelpCenter = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 sm:gap-5 mb-4 sm:mb-6">
-          <button onClick={() => router.back()}>
-            <FaArrowLeft size={24} className={`${dark ? 'text-white' : 'text-gray-900'}`} />
-          </button>
-          <h1 className={`text-lg sm:text-xl font-[Poppins-Medium] ${dark ? 'text-white' : 'text-gray-900'}`}>
+         
+          <h1 className={`text-lg sm:text-xl font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
             {content.title}
           </h1>
         </div>
@@ -58,7 +56,7 @@ const HelpCenter = () => {
             onClick={() => handleTabPress('faq')}
             className={`flex-1 py-4 text-center border-b-4 ${
               activeTab === 'faq' ? 'border-purple-600 text-purple-600' : 'border-gray-300 text-gray-400'
-            } font-[Poppins-Medium] text-base sm:text-lg`}
+            } font-semibold text-base sm:text-lg`}
           >
             {content.tabs.faq}
           </button> */}
@@ -66,7 +64,7 @@ const HelpCenter = () => {
             onClick={() => handleTabPress('contact')}
             className={`flex-1 py-4 text-center border-b-4 ${
               activeTab === 'contact' ? 'border-purple-600 text-purple-600' : 'border-gray-300 text-gray-400'
-            } font-[Poppins-Medium] text-base sm:text-lg`}
+            } font-semibold text-base sm:text-lg`}
           >
             {content.tabs.contact}
           </button>

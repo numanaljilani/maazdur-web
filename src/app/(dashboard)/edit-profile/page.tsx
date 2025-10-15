@@ -104,7 +104,7 @@ const UpdateProfile = () => {
           <button onClick={() => router.back()}>
             <FaArrowLeft size={24} className={`${dark ? 'text-white' : 'text-gray-900'}`} />
           </button>
-          <h1 className={`text-xl sm:text-2xl font-[Poppins-SemiBold] ${dark ? 'text-white' : 'text-gray-900'}`}>
+          <h1 className={`text-xl sm:text-2xl font-font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
             {language ? 'प्रोफ़ाइल पूर्ण करें' : 'Fill Your Profile'}
           </h1>
         </div>
@@ -149,7 +149,7 @@ const UpdateProfile = () => {
         {/* Form */}
         <div className="mt-6 px-4">
           <div className="relative mb-4">
-            <label className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <label className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
               {language ? 'नाम' : 'Full Name'}
             </label>
             <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
@@ -168,7 +168,7 @@ const UpdateProfile = () => {
           </div>
 
           <div className="relative mb-4">
-            <label className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <label className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
               {language ? 'उपनाम' : 'Nickname'}
             </label>
             <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
@@ -187,7 +187,7 @@ const UpdateProfile = () => {
           </div>
 
           <div className="relative mb-4">
-            <label className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <label className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
               {language ? 'ईमेल' : 'Email'}
             </label>
             <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
@@ -206,7 +206,7 @@ const UpdateProfile = () => {
           </div>
 
           <div className="relative mb-4">
-            <label className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <label className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
               {language ? 'जन्म तिथि' : 'Date of Birth'}
             </label>
             <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
@@ -224,7 +224,7 @@ const UpdateProfile = () => {
           </div>
 
           <div className="relative mb-4">
-            <label className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <label className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
               {language ? 'फ़ोन' : 'Phone'}
             </label>
             <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
@@ -243,7 +243,7 @@ const UpdateProfile = () => {
           </div>
 
           <div className="relative mb-4">
-            <label className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <label className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
               {language ? 'पता' : 'Address'}
             </label>
             <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
@@ -264,13 +264,13 @@ const UpdateProfile = () => {
           <div className="flex flex-col sm:flex-row gap-2 mt-4">
             <button
               onClick={() => router.push('/contractor-registration')}
-              className="flex-1 bg-purple-600 text-white py-3 rounded-full font-[Poppins-Regular] text-lg tracking-wider"
+              className="flex-1 bg-purple-600 text-white py-3 rounded-full font-font-regular text-lg tracking-wider"
             >
               {language ? 'ठेकेदार' : 'Contractor'}
             </button>
             <button
               onClick={completeProfile}
-              className="flex-1 bg-purple-600 text-white py-3 rounded-full font-[Poppins-Regular] text-lg tracking-wider"
+              className="flex-1 bg-purple-600 text-white py-3 rounded-full font-font-regular text-lg tracking-wider"
             >
               {language ? 'अद्यतन' : 'Update'}
             </button>

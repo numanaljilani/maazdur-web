@@ -51,13 +51,13 @@ const Profile = () => {
             <button onClick={() => router.push('/home')}>
               <FaArrowLeft size={24} className={`${dark ? 'text-white' : 'text-gray-900'}`} />
             </button>
-            <h1 className={`text-xl sm:text-2xl font-[Poppins-SemiBold] ${dark ? 'text-white' : 'text-gray-900'}`}>
+            <h1 className={`text-xl sm:text-2xl font-font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
               {language ? 'मेरी प्रोफ़ाइल' : 'My Profile'}
             </h1>
           </div>
           <button
             onClick={() => router.push('/edit-profile')}
-            className="flex items-center gap-2 bg-purple-600 text-white py-2 px-4 rounded-full font-[Poppins-Regular] text-base"
+            className="flex items-center gap-2 bg-purple-600 text-white py-2 px-4 rounded-full font-font-regular text-base"
           >
             <FaEdit size={16} />
             {language ? 'संपादित करें' : 'Edit'}
@@ -83,70 +83,70 @@ const Profile = () => {
             <div className="flex items-center gap-3">
               <FaUser className="text-purple-600" size={20} />
               <div>
-                <p className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {language ? 'नाम' : 'Full Name'}
                 </p>
-                <p className="text-lg font-[Poppins-SemiBold]">{userData?.fullname || 'N/A'}</p>
+                <p className="text-lg font-font-semibold">{userData?.fullname || 'N/A'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               <FaSignature className="text-purple-600" size={20} />
               <div>
-                <p className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {language ? 'उपनाम' : 'Nickname'}
                 </p>
-                <p className="text-lg font-[Poppins-SemiBold]">{userData?.nikname || 'N/A'}</p>
+                <p className="text-lg font-font-semibold">{userData?.nikname || 'N/A'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               <FaEnvelope className="text-purple-600" size={20} />
               <div>
-                <p className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {language ? 'ईमेल' : 'Email'}
                 </p>
-                <p className="text-lg font-[Poppins-SemiBold]">{userData?.email || 'N/A'}</p>
+                <p className="text-lg font-font-semibold">{userData?.email || 'N/A'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               <FaPhone className="text-purple-600" size={20} />
               <div>
-                <p className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {language ? 'फ़ोन' : 'Phone'}
                 </p>
-                <p className="text-lg font-[Poppins-SemiBold]">{userData?.phone || 'N/A'}</p>
+                <p className="text-lg font-font-semibold">{userData?.phone || 'N/A'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               <FaMapMarkerAlt className="text-purple-600" size={20} />
               <div>
-                <p className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {language ? 'पता' : 'Address'}
                 </p>
-                <p className="text-lg font-[Poppins-SemiBold]">{userData?.address || 'N/A'}</p>
+                <p className="text-lg font-font-semibold">{userData?.address || 'N/A'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               <FaStar className="text-purple-600" size={20} />
               <div>
-                <p className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {language ? 'रेटिंग' : 'Rating'}
                 </p>
-                <p className="text-lg font-[Poppins-SemiBold]">{userData?.rating || 'N/A'}</p>
+                <p className="text-lg font-font-semibold">{userData?.rating || 'N/A'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               <FaBriefcase className="text-purple-600" size={20} />
               <div>
-                <p className={`text-sm font-[Poppins-Regular] ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm font-font-regular ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {language ? 'ठेकेदार स्थिति' : 'Contractor Status'}
                 </p>
-                <p className="text-lg font-[Poppins-SemiBold]">
+                <p className="text-lg font-font-semibold">
                   {userData?.isContractor ? (language ? 'ठेकेदार' : 'Contractor') : (language ? 'नहीं' : 'Not a Contractor')}
                 </p>
               </div>
@@ -158,7 +158,7 @@ const Profile = () => {
             <div className="mt-6">
               <button
                 onClick={() => router.push('/contractor-registration')}
-                className="w-full bg-purple-600 text-white py-3 rounded-full font-[Poppins-Regular] text-lg tracking-wider"
+                className="w-full bg-purple-600 text-white py-3 rounded-full font-font-regular text-lg tracking-wider"
               >
                 {language ? 'ठेकेदार बनें' : 'Become a Contractor'}
               </button>

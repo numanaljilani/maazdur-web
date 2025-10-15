@@ -23,13 +23,8 @@ const SubCategories = () => {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className={`flex items-center gap-3 mb-6 ${dark ? 'bg-gray-900' : 'bg-white'}`}>
-          <button onClick={() => router.push('/home')}>
-            <FaArrowLeft
-              size={24}
-              className={dark ? 'text-white' : 'text-gray-900'}
-            />
-          </button>
-          <h1 className={`text-lg sm:text-xl font-[Poppins-SemiBold] ${dark ? 'text-white' : 'text-gray-900'} shadow-md`}>
+        
+          <h1 className={`text-lg sm:text-xl font-[Poppins-SemiBold] ${dark ? 'text-white' : 'text-gray-900'}`}>
             {language ? 'उपश्रेणी' : 'Sub Services'}
           </h1>
         </div>
