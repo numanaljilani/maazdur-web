@@ -10,6 +10,7 @@ import InputText from '@/components/InputText';
 import Button from '@/components/Button'; 
 import ActivityIndicator from '@/components/ActivityIndicator';
 import Link from 'next/link';
+import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 
 // Placeholder icons; replace with your actual icon paths
 const icons = {
@@ -154,6 +155,7 @@ const LoginPage = () => {
         </Link>
       </div>
       {loading && <ActivityIndicator />}
+         <PWAInstallPrompt />
     </div>
   );
 };

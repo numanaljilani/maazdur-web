@@ -105,7 +105,7 @@ const HomePage = () => {
         <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
           {language ? 'सेवाएं' : 'Services'}
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 justify-center">
+        <div className="flex flex-wrap justify-between gap-3 justify-center">
           {[
             { name: language ? 'सहायक' : 'Helper', icon: <FaBoxes className="text-cyan-500" size={25} />, service: 'Helper' },
             { name: language ? 'नौकरानी' : 'Maid', icon: <FaFemale className="text-green-500" size={25} />, service: 'Maid' },

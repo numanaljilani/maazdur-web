@@ -10,11 +10,11 @@ import Script from "next/script";
 const inter = Poppins({ subsets: ["latin"], weight: "500" });
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: '#000000',
 }
 
 export const metadata: Metadata = {
@@ -23,61 +23,21 @@ export const metadata: Metadata = {
     template: '%s | Mazdur+'
   },
   description: 'Find trusted service providers for all your home needs',
-  generator: 'Next.js',
-  applicationName: 'Mazdur+',
-  referrer: 'origin-when-cross-origin',
-  keywords: ['services', 'home services', 'professionals', 'mazdur'],
-  authors: [{ name: 'Mazdur+' }],
-  creator: 'Mazdur+',
-  publisher: 'Mazdur+',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL('https://yourdomain.com'),
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    title: 'Mazdur+ - Home Services',
-    description: 'Find trusted service providers for all your home needs',
-    url: 'https://yourdomain.com',
-    siteName: 'Mazdur+',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Mazdur+ - Home Services',
-    description: 'Find trusted service providers for all your home needs',
-    images: ['/twitter-image.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: 'your-google-verification-code',
-  },
+  manifest: '/manifest.json',
+  themeColor: '#000000',
   appleWebApp: {
-    title: 'Mazdur+',
-    statusBarStyle: 'default',
     capable: true,
+    statusBarStyle: 'default',
+    title: 'Mazdur+',
+  },
+  icons: {
+    icon: [
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+    ],
   },
 }
 
@@ -89,6 +49,14 @@ export default function RootLayout({
   return (
     <html lang="en">
      <head>
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Mazdur+" />
+
+             <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+
       <meta name="google-adsense-account" content="ca-pub-1293944120824070"></meta>
         <Script
           async
