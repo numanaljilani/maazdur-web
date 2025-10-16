@@ -86,40 +86,47 @@ const ContractorListScreen = () => {
         dark ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       }`}
     >
-      {/* Header */}
-      <div className="sticky  flex justify-center items-center -top-5 z-10 bg-inherit border-b border-gray-300 dark:border-gray-700">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 py-4 gap-4">
-          <div className="flex items-center gap-4 w-full sm:w-auto">
-           
 
-            <div className="min-w-0 flex-1">
-              <h1
-                className={`text-xl sm:text-2xl font-semibold truncate ${
-                  dark ? "text-white" : "text-gray-900"
-                }`}
+
+          <header className="bg-white  shadow-sm border-b border-gray-200 ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => router.back()}
+                className="p-2 rounded-lg bg-gray-100  hover:bg-gray-200  transition-colors"
               >
-                {service && subService
+                <svg className="w-5 h-5 text-gray-600 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </button>
+              <div>
+
+              <h1 className="text-2xl font-bold text-gray-800 ">
+                  {service && subService
                   ? ` ${subService}`
                   : searchQuery}
               </h1>
-              <p
+                 <p
                 className={`text-sm ${
                   dark ? "text-gray-300" : "text-gray-600"
                 } mt-1 truncate`}
               >
                 {service ? service : `Search results for "${searchQuery}"`}
               </p>
+              </div>
+             
             </div>
+            <div className="flex items-center space-x-4">
+              {/* Theme Toggle or other header actions can go here */}
+            
+            </div>
+            
           </div>
-
-          {/* <button className="flex-shrink-0 p-3 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors self-end sm:self-auto">
-            <FaSearch
-              size={20}
-              className={dark ? "text-white" : "text-gray-600"}
-            />
-          </button> */}
         </div>
-      </div>
+        </header>
+      {/* Header */}
+     
 
       {/* Content */}
       <div className="px-4 sm:px-6  py-4">
@@ -137,14 +144,6 @@ const ContractorListScreen = () => {
                 setContractors={setContractors}
                 fromBookmark={false}
               />
-
-              //   <WorkerList
-              //             key={index}
-              //             item={item}
-              //             contractors={contractors}
-              //             setContractors={setContractors}
-              //             fromBookmark={false}
-              //           />
             ))}
           </div>
         ) : (
@@ -171,7 +170,7 @@ const NotFound = () => {
 
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <Image
           src="/not-found.png"
           alt="No contractors found"
@@ -186,7 +185,7 @@ const NotFound = () => {
         }`}
       >
         {language ? "कोई कर्मचारी नहीं मिला" : "No Workers Found"}
-      </h2>
+      </h2> */}
       <p
         className={`text-lg mb-6 max-w-md ${
           dark ? "text-gray-300" : "text-gray-600"
@@ -197,7 +196,7 @@ const NotFound = () => {
           : "We couldn't find any workers matching your search. Please try with different keywords."}
       </p>
       <Link
-        href="/search"
+        href="/home"
         className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold"
       >
         {language ? "वापस खोजें" : "Back to Search"}
