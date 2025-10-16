@@ -34,7 +34,7 @@ export default function DashboardLayout({
       )}
 
       {/* Main Content */}
-      <main className="flex-1 p-6 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto">
         {/* Hamburger Menu for Mobile */}
         {/* <button
           className="sm:hidden mb-4 p-2 rounded-md bg-gray-200 dark:bg-gray-700"

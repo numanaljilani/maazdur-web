@@ -43,7 +43,7 @@ const BottomTabs = () => {
   return (
     <>
       {/* Bottom Tabs Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+      <nav className="fixed bottom-0 left-0 py-2 right-0 z-50 bg-white  border-t border-gray-200 ">
         <div className="flex items-center justify-around">
           {tabs.map((tab) => {
             const isActive = pathname === tab.path;
@@ -53,12 +53,12 @@ const BottomTabs = () => {
                 href={tab.path}
                 className={`
                   flex flex-col items-center justify-center 
-                  py-3 px-4 
+                  py-1 px-4 
                   transition-all duration-200 
                   flex-1
                   ${isActive 
-                    ? 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20' 
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                    ? 'text-purple-600  bg-purple-50 ' 
+                    : 'text-gray-500  hover:text-gray-700 '
                   }
                 `}
               >
@@ -70,14 +70,14 @@ const BottomTabs = () => {
                 </div>
                 <span className={`
                   text-xs mt-1 font-medium
-                  ${isActive ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500 dark:text-gray-400'}
+                  ${isActive ? 'text-purple-600 ' : 'text-gray-500 '}
                 `}>
                   {tab.name}
                 </span>
                 
                 {/* Active Indicator */}
                 {isActive && (
-                  <div className="absolute top-0 w-12 h-1 bg-purple-600 dark:bg-purple-400 rounded-b-full" />
+                  <div className="absolute top-0 w-12 h-1 bg-purple-600  rounded-b-full" />
                 )}
               </Link>
             );
@@ -85,13 +85,13 @@ const BottomTabs = () => {
         </div>
         
         {/* Safe area for mobile devices */}
-        <div className="h-4 bg-white dark:bg-gray-800 sm:hidden" />
+        {/* <div className=" bg-white  sm:hidden" /> */}
       </nav>
 
       {/* Add padding to main content to avoid overlap */}
       <style jsx global>{`
         main {
-          padding-bottom: 80px;
+          padding-bottom: 60px;
         }
         @media (min-width: 640px) {
           main {

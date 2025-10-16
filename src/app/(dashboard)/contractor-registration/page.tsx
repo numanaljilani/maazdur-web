@@ -118,8 +118,8 @@ const WorkDetailsInput = () => {
                 <button
                   key={item.english}
                   onClick={() => toggleSubService(item.english)}
-                  className={`w-full p-3 border-b border-gray-200 dark:border-gray-700 text-left ${
-                    selectedSubServices.includes(item.english) ? 'bg-purple-100 dark:bg-purple-900' : ''
+                  className={`w-full p-3 border-b border-gray-200  text-left ${
+                    selectedSubServices.includes(item.english) ? 'bg-purple-100 ' : ''
                   }`}
                 >
                   <span className="text-base">{language ? item.hindi : item.english}</span>
@@ -157,14 +157,14 @@ const WorkDetailsInput = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md">
+        <div className="bg-white  p-4 sm:p-6 rounded-lg shadow-md">
           <select
             value={service}
             onChange={(e) => {
               setService(e.target.value);
               setSelectedSubServices([]);
             }}
-            className={`w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 ${
+            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
               dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
             } focus:outline-none focus:ring-2 focus:ring-purple-600`}
           >
@@ -182,7 +182,7 @@ const WorkDetailsInput = () => {
                 {selectedSubServices.map((subService) => (
                   <div
                     key={subService}
-                    className="flex items-center bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full"
+                    className="flex items-center bg-gray-200  px-3 py-1 rounded-full"
                   >
                     <span className="text-sm mr-2">
                       {language
@@ -197,7 +197,7 @@ const WorkDetailsInput = () => {
               </div>
               <button
                 onClick={() => setModalVisible(true)}
-                className="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded-lg mb-4"
+                className="w-full bg-gray-100  text-gray-900  p-3 rounded-lg mb-4"
               >
                 {language ? 'उप-सेवाएँ चुनें' : 'Select Sub-Services'}
               </button>
@@ -209,7 +209,7 @@ const WorkDetailsInput = () => {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="Price"
-            className={`w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 ${
+            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
               dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
             } focus:outline-none focus:ring-2 focus:ring-purple-600`}
           />
@@ -217,7 +217,7 @@ const WorkDetailsInput = () => {
           <select
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
-            className={`w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 ${
+            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
               dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
             } focus:outline-none focus:ring-2 focus:ring-purple-600`}
           >
@@ -234,7 +234,7 @@ const WorkDetailsInput = () => {
             onChange={(e) => setAbout(e.target.value)}
             placeholder={userData.isContractor ? contractorDetails?.about : 'About'}
             rows={4}
-            className={`w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 ${
+            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
               dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
             } focus:outline-none focus:ring-2 focus:ring-purple-600`}
           />

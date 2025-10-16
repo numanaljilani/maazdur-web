@@ -65,16 +65,16 @@ const Profile = () => {
         </div>
 
         {/* Profile Card */}
-        <div className={`rounded-lg shadow-lg p-6 ${dark ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <div className={`rounded-lg shadow-lg p-6 ${dark ? 'bg-gray-800' : 'bg-gray-50'} `}>
           {/* Profile Image */}
-          <div className="relative w-36 h-36 mx-auto mb-6">
+          <div className="relative w-36 h-36 mx-auto mb-6 ">
             <img
-              src={userData?.image}
+              src={userData?.image ? userData?.image : '/icons/icon-512x512.png'}
               alt="profile"
               width={144}
               height={144}
-              className="w-full h-full rounded-full object-cover"
-              style={{ filter: userData?.image ? 'none' : 'grayscale(100%)' }}
+              className="w-full h-full rounded-full object-cover border-3 border-purple-600"
+              style={{ filter: userData?.image ? 'none' : 'grayscale(0%)' }}
             />
           </div>
 

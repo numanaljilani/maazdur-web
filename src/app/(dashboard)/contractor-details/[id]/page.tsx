@@ -141,7 +141,7 @@ const WorkDetails = ({  }: {  }) => {
             className={`px-3 py-2 rounded-full border-2 border-purple-600 text-xs sm:text-sm font-medium whitespace-nowrap min-w-max ${
               isPressed === value 
                 ? 'bg-purple-600 text-white' 
-                : 'bg-white text-purple-600 dark:bg-gray-700 dark:text-white'
+                : 'bg-white text-purple-600  '
             } transition-colors duration-200`}
           >
             {value}
@@ -152,7 +152,7 @@ const WorkDetails = ({  }: {  }) => {
   };
 
   return (
-    <div className={`min-h-screen relative ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} relative pb-20`}>
+    <div className={`min-h-screen relative pb-25 ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} relative pb-20`}>
       {loading ? (
         <div className="flex justify-center items-center min-h-screen">
           <ActivityIndicator />
@@ -169,12 +169,12 @@ const WorkDetails = ({  }: {  }) => {
                 src={
                   contractorDetails?.image 
                     ? contractorDetails.image 
-                    : 'https://plus.unsplash.com/premium_photo-1664299941780-e8badc0b1617?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29uc3RydWN0aW9uJTIwd29ya2VyfGVufDB8fDB8fHww'
+                    : '/icons/icon-512x512.png'
                 }
                 alt="contractor"
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = 'https://plus.unsplash.com/premium_photo-1664299941780-e8badc0b1617?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29uc3RydWN0aW9uJTIwd29ya2VyfGVufDB8fDB8fHww';
+                  e.currentTarget.src = '/icons/icon-512x512.png';
                 }}
               />
             </div>
@@ -208,7 +208,7 @@ const WorkDetails = ({  }: {  }) => {
               </div>
               <button 
                 onClick={addToBookmarks}
-                className="flex-shrink-0 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                className="flex-shrink-0 p-2 hover:bg-gray-100  rounded-full transition-colors"
               >
                 <FaBookmark
                   size={28}
@@ -235,7 +235,7 @@ const WorkDetails = ({  }: {  }) => {
                 <p className={`text-sm ${dark ? 'text-gray-300' : 'text-gray-600'}`}>({contractorDetails?.unit || ''})</p>
               </div>
             </div>
-            <div className="border-b border-gray-300 dark:border-gray-600 my-4" />
+            <div className="border-b border-gray-300  my-4" />
           </div>
 
           {/* About */}
@@ -260,7 +260,7 @@ const WorkDetails = ({  }: {  }) => {
             
             <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
               {posts.slice(0, 5).map((item: any, index: number) => (
-                <div key={index} className="aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+                <div key={index} className="aspect-square rounded-lg overflow-hidden bg-gray-200 ">
                   <img
                     src={item.imageurl || '/placeholder-image.jpg'}
                     alt="post"
@@ -275,7 +275,7 @@ const WorkDetails = ({  }: {  }) => {
             
             {userData._id === params.id && (
               <div className="mt-4 flex justify-end">
-                <label className="bg-gray-200 dark:bg-gray-700 rounded-lg w-full xs:w-1/2 sm:w-1/3 md:w-1/4 py-8 flex justify-center items-center cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                <label className="bg-gray-200  rounded-lg w-full xs:w-1/2 sm:w-1/3 md:w-1/4 py-8 flex justify-center items-center cursor-pointer hover:bg-gray-300  transition-colors">
                   <span className="text-4xl text-gray-400">+</span>
                   <input type="file" className="hidden" accept="image/*" onChange={uploadImage} />
                 </label>
@@ -312,7 +312,7 @@ const WorkDetails = ({  }: {  }) => {
             </div>
 
             {searchParams.get('canPost') === 'true' && (
-              <div className="border border-gray-300 dark:border-gray-600 p-4 rounded-2xl sm:rounded-3xl mt-4 mb-6">
+              <div className="border border-gray-300  p-4 rounded-2xl sm:rounded-3xl mt-4 mb-6">
                 <div className="flex gap-1 sm:gap-2 justify-center sm:justify-start">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button 
@@ -351,10 +351,10 @@ const WorkDetails = ({  }: {  }) => {
 
             <div className="space-y-4">
               {reviewsData.map((item: any, index: number) => (
-                <div key={index} className="pb-4 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                <div key={index} className="pb-4 border-b border-gray-200  last:border-b-0">
                   <div className="flex justify-between items-start gap-3">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex-shrink-0 w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
+                      <div className="flex-shrink-0 w-10 h-10 bg-gray-300  rounded-full overflow-hidden">
                         <img
                           src={item?.user?.image || '/avatar.png'}
                           alt="user"
@@ -384,16 +384,16 @@ const WorkDetails = ({  }: {  }) => {
             </div>
             
             {reviewsData.length > 0 && (
-              <div className="border-b border-gray-300 dark:border-gray-600 my-6" />
+              <div className="border-b border-gray-300  my-6" />
             )}
           </div>
 
           {/* Call Button - Fixed Bottom */}
-          <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-white via-white/95 to-transparent dark:from-gray-900 dark:via-gray-900/95 dark:to-transparent">
+          <div className="fixed bottom-15 left-0 right-0 p-4 bg-gradient-to-t from-white via-white/95 to-transparent ">
             <div className="max-w-4xl mx-auto">
               <button
                 onClick={handleCall}
-                className="w-full flex items-center justify-center bg-white border-2 border-purple-600 text-purple-600 py-4 px-6 rounded-2xl hover:bg-purple-50 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200 shadow-lg"
+                className="w-full flex items-center justify-center bg-white border-2 border-purple-600 text-purple-600 py-4 px-6 rounded-2xl hover:bg-purple-50   transition-colors duration-200 shadow-lg"
               >
                 <div className="flex items-center justify-center gap-3">
                   <FaPhone size={20} className="text-purple-600" />
