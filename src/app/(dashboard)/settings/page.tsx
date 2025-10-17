@@ -11,6 +11,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const { language, dark, userData } = useSelector((state: any) => state.user);
 
+console.log(userData?.image)
   const tabs = [
     // { name: language ? 'घर' : 'Home', path: '/home', icon: '/home.png', loginRequired: false },
     { name: language ? 'उपयोगकर्ता' : 'User', path: '/profile', icon: '/user.png', loginRequired: true },
@@ -29,7 +30,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-20 border-2 ">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-20 ">
       {/* Header */}
       <header className="bg-white  shadow-sm border-b border-gray-200 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

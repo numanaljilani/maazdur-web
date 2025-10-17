@@ -46,6 +46,13 @@ export const userzApi = createApi({
         };
       },
     }),
+        googleAuth: builder.mutation({
+      query: ({ token }) => ({
+        url: 'auth/google',
+        method: 'POST',
+        body: { token },
+      }),
+    }),
     me: builder.mutation({
       query: args => {
         return {
@@ -198,6 +205,7 @@ export const {
   useUpdateProfileMutation,
   useCompleteProfileMutation,
   useDeleteMyAccountMutation,
+  useGoogleAuthMutation,
 
   useUploadPostMutation,
   useCompleteContractorRegistrationMutation,

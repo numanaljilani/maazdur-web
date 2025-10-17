@@ -11,9 +11,12 @@ import Button from '@/components/Button';
 import ActivityIndicator from '@/components/ActivityIndicator';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useIsAvailableMutation } from '@/service/api/userApi'; 
+import { GoogleLogin } from '@react-oauth/google';
+import { useIsAvailableMutation, useGoogleAuthMutation } from '@/service/api/userApi';
+import { setUser, setToken } from '@/service/slice/userSlice';
+import { FcGoogle } from 'react-icons/fc';
 
-// Placeholder icons; replace with your actual icon paths
+// Placeholder icons
 const icons = {
   email: '/mail.png',
   password: '/password.png',
@@ -41,8 +44,8 @@ const SignupPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { language, dark } = useSelector((state: any) => state.user);
-  const [isEmailAvailable, { data, isSuccess, error, isError }] =
-    useIsAvailableMutation();
+  const [isEmailAvailable, { data, isSuccess, error, isError }] = useIsAvailableMutation();
+  const [googleAuth, { data: googleData, isSuccess: googleSuccess, error: googleError, isError: googleIsError }] = useGoogleAuthMutation();
 
   const {
     register,
@@ -79,26 +82,84 @@ const SignupPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (isSuccess && data?.success) {
-      toast.success('Email is available, proceed to complete your profile.', {
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    console.log(credentialResponse , "Credentials response")
+    try {
+      setLoading(true);
+      const response: any = await googleAuth({ token: credentialResponse.credential });
+      if (response.data) {
+        dispatch(setUser(response.data.user));
+        dispatch(setToken(response.data.accessToken));
+        localStorage.setItem('accessToken', JSON.stringify(response.data.accessToken));
+        toast.success(response.data.message, {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+        if (response.data.isNewUser) {
+          router.push(`/complete-profile?email=${encodeURIComponent(response.data.user.email)}`);
+        } else {
+          router.push('/dashboard');
+        }
+      } else {
+        toast.error('Google authentication failed.', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong with Google authentication.', {
         position: 'top-right',
         autoClose: 3000,
       });
       setLoading(false);
     }
-  }, [isSuccess, data]);
+  };
+
+  const handleGoogleError = () => {
+    toast.error(language ? 'Google साइन-इन विफल हुआ।' : 'Google sign-in failed.', {
+      position: 'top-right',
+      autoClose: 3000,
+    });
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (isSuccess && data?.success) {
+      toast.success(language ? 'ईमेल उपलब्ध है, प्रोफाइल पूर्ण करें।' : 'Email is available, proceed to complete your profile.', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      setLoading(false);
+    }
+  }, [isSuccess, data, language]);
 
   useEffect(() => {
     if (isError && error) {
-      // @ts-ignore
-      toast.error(error?.data?.message || 'Email is already taken.', {
+      toast.error((error as any)?.data?.message || (language ? 'ईमेल पहले से लिया गया है।' : 'Email is already taken.'), {
         position: 'top-right',
         autoClose: 3000,
       });
       setLoading(false);
     }
-  }, [isError, error]);
+  }, [isError, error, language]);
+
+  useEffect(() => {
+    if (googleSuccess && googleData) {
+      setLoading(false);
+    }
+  }, [googleSuccess, googleData]);
+
+  useEffect(() => {
+    if (googleIsError && googleError) {
+      toast.error((googleError as any)?.data?.message || (language ? 'Google प्रमाणीकरण विफल हुआ।' : 'Google authentication failed.'), {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      setLoading(false);
+    }
+  }, [googleIsError, googleError, language]);
 
   return (
     <div
@@ -117,13 +178,6 @@ const SignupPage = () => {
         }`}
       >
         {language ? 'अपना खाता बनाएं' : 'Create your Account'}
-      </h2>
-      <h2
-        className={` text-3xl sm:text-xl leading-relaxed text-center mt-2 ${
-          dark ? 'text-white' : 'text-gray-900'
-        }`}
-      >
-        अपना खाता बनाएं
       </h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -192,6 +246,16 @@ const SignupPage = () => {
           text={language ? 'साइन अप करें' : 'Sign up'}
         />
       </form>
+      <div className="mt-4 max-w-md mx-auto text-center flex justify-center items-center  w-full">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleError}
+          useOneTap
+          text="signup_with"
+          width="100%"
+          
+        />
+      </div>
       <div className="mt-8 text-center">
         <Link href="/login">
           <span className="text-gray-500 font-medium">

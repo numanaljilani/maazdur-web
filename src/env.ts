@@ -1,6 +1,6 @@
 export default {
     server : "https://mazdur.vercel.app",
-    // server : "http://192.168.31.193:8000",
+    // server : "http://192.168.56.1:8000",
     // server : "http://192.168.111.213:5000",
     // server : "https://server.mazdur.in",
     // storage : "http://192.168.52.213:3000"

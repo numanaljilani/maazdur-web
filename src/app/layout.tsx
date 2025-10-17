@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import ReduxWrapper from "@/components/ReduxWrapper";
 import Script from "next/script";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 
 
@@ -66,7 +67,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
         <ReduxWrapper>{children}</ReduxWrapper>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );
