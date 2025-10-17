@@ -139,7 +139,7 @@ const CompleteProfilePage = () => {
           
           toast.success("Location found successfully!", {
             position: "top-center",
-            autoClose: 2000,
+         
           });
         },
         (error) => {
