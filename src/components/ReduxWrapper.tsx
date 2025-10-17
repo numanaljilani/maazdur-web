@@ -1,8 +1,8 @@
 "use client"
 import { persistor, store } from "@/service/store";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
-import { ToastContainer } from "react-toastify";
 import { PersistGate } from "redux-persist/integration/react";
 
 function ReduxWrapper({
@@ -14,7 +14,7 @@ function ReduxWrapper({
     <PersistGate loading={null} persistor={persistor}>
     <Provider store={store}>
       {children}
-      <ToastContainer position="top-right" autoClose={3000} />
+     <Toaster />
     </Provider>
     </PersistGate>
   );

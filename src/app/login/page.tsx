@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { setUser, setToken } from '@/service/slice/userSlice';
 import { useLoginMutation, useGoogleAuthMutation } from '@/service/api/userApi';
 import InputText from '@/components/InputText';
@@ -38,8 +38,8 @@ const LoginPage = () => {
   const handleLogin = async () => {
     if (!email || !password) {
       toast.error(language ? 'ईमेल और पासवर्ड प्रदान करना होगा।' : 'Email and Password must be provided.', {
-        position: 'top-right',
-        autoClose: 3000,
+        position: 'top-center',
+       
       });
       return;
     }
@@ -49,8 +49,8 @@ const LoginPage = () => {
     } catch (err) {
       console.error(err);
       toast.error(language ? 'कुछ गलत हुआ।' : 'Something went wrong.', {
-        position: 'top-right',
-        autoClose: 3000,
+        position: 'top-center',
+       
       });
       setLoading(false);
     }
@@ -66,8 +66,8 @@ const LoginPage = () => {
         dispatch(setToken(response.data.accessToken));
         localStorage.setItem('accessToken', JSON.stringify(response.data.accessToken));
         toast.success(response.data.message, {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+         
         });
         if (response.data.isNewUser) {
           // router.push(`/complete-profile?email=${encodeURIComponent(response.data.user.email)}`);
@@ -77,16 +77,16 @@ const LoginPage = () => {
         }
       } else {
         toast.error(language ? 'Google लॉगिन विफल हुआ।' : 'Google login failed.', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+         
         });
         setLoading(false);
       }
     } catch (err) {
       console.error(err);
       toast.error(language ? 'Google प्रमाणीकरण में कुछ गलत हुआ।' : 'Something went wrong with Google authentication.', {
-        position: 'top-right',
-        autoClose: 3000,
+        position: 'top-center',
+       
       });
       setLoading(false);
     }
@@ -94,8 +94,8 @@ const LoginPage = () => {
 
   const handleGoogleError = () => {
     toast.error(language ? 'Google लॉगिन विफल हुआ।' : 'Google login failed.', {
-      position: 'top-right',
-      autoClose: 3000,
+      position: 'top-center',
+     
     });
     setLoading(false);
   };
@@ -108,8 +108,8 @@ const LoginPage = () => {
       localStorage.setItem('accessToken', JSON.stringify(data.accessToken));
       router.push('/home');
       toast.success(data.message || (language ? 'लॉगिन सफल' : 'Login successful'), {
-        position: 'top-right',
-        autoClose: 3000,
+        position: 'top-center',
+       
       });
       setLoading(false);
     }
@@ -118,8 +118,8 @@ const LoginPage = () => {
   useEffect(() => {
     if (isError && error) {
       toast.error((error as any)?.data?.message || (language ? 'अमान्य ईमेल या पासवर्ड' : 'Invalid email or password'), {
-        position: 'top-right',
-        autoClose: 3000,
+        position: 'top-center',
+       
       });
       setLoading(false);
     }
@@ -134,8 +134,8 @@ const LoginPage = () => {
   useEffect(() => {
     if (googleIsError && googleError) {
       toast.error((googleError as any)?.data?.message || (language ? 'Google प्रमाणीकरण विफल हुआ।' : 'Google authentication failed.'), {
-        position: 'top-right',
-        autoClose: 3000,
+        position: 'top-center',
+       
       });
       setLoading(false);
     }

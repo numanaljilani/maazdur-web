@@ -50,15 +50,15 @@ const HomePage = () => {
         setContractors(res.data.contractors || []);
       } else {
         toast.error(res.error?.data?.message || "Failed to fetch contractors", {
-          position: "top-right",
-          autoClose: 3000,
+          position: "top-center",
+        
         });
       }
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong", {
-        position: "top-right",
-        autoClose: 3000,
+        position: "top-center",
+      
       });
     }
     setLoading(false);
@@ -78,8 +78,8 @@ const HomePage = () => {
     if (isError && error) {
       // @ts-ignore
       toast.error(error?.data?.message || "Failed to fetch contractors", {
-        position: "top-right",
-        autoClose: 3000,
+        position: "top-center",
+      
       });
     }
   }, [isError, error]);

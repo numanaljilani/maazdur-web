@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { FaArrowLeft, FaBookmark, FaStar, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { useContractorDetailsMutation, useUploadPostMutation, useBookmarkMutation } from '@/service/api/userApi';
 import ActivityIndicator from '@/components/ActivityIndicator';
@@ -36,13 +36,13 @@ const WorkDetails = ({  }: {  }) => {
         setContractorDetails(res.data);
       } else {
         toast.error(res.error?.data?.message || 'Failed to fetch contractor details', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-right', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
     }
     setLoading(false);
   };
@@ -56,18 +56,18 @@ const WorkDetails = ({  }: {  }) => {
       if (res.data) {
         setBookmark(!bookmark);
         toast.success('Successfully updated bookmark', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+        
         });
       } else {
         toast.error(res.error?.data?.message || 'Failed to update bookmark', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-right', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
     }
   };
 
@@ -83,18 +83,18 @@ const WorkDetails = ({  }: {  }) => {
       const res: any = await uploadPost({ body: formData, token: userData.accessToken });
       if (res.data) {
         toast.success('Image uploaded successfully', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+        
         });
       } else {
         toast.error(res.error?.data?.message || 'Failed to upload image', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-right', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
     }
   };
 

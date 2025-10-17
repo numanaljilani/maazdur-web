@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FaArrowLeft, FaEdit, FaUser, FaSignature, FaEnvelope, FaPhone, FaMapMarkerAlt, FaStar, FaBriefcase } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import ActivityIndicator from '@/components/ActivityIndicator';
 import { useMeMutation } from '@/service/api/userApi';
 import { setUser } from '@/service/slice/userSlice';
@@ -26,11 +26,11 @@ const Profile = () => {
       if (res.data) {
         dispatch(setUser(res.data.user));
       } else {
-        toast.error('Failed to fetch user data', { position: 'top-right', autoClose: 3000 });
+        toast.error('Failed to fetch user data', { position: 'top-center', autoClose: 3000 });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-right', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
     }
     setLoading(false);
   };

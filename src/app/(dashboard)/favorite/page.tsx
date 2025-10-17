@@ -41,16 +41,16 @@ const Bookmarks = () => {
         toast.error(
           language ? "बुकमार्क लाने में विफल" : "Failed to fetch bookmarks",
           {
-            position: "top-right",
-            autoClose: 3000,
+            position: "top-center",
+          
           }
         );
       }
     } catch (err) {
       console.error(err);
       toast.error(language ? "कुछ गलत हुआ" : "Something went wrong", {
-        position: "top-right",
-        autoClose: 3000,
+        position: "top-center",
+      
       });
     }
     setSkLoading(false);
@@ -69,8 +69,8 @@ const Bookmarks = () => {
       toast.error(
         language ? "बुकमार्क लाने में विफल" : "Failed to fetch bookmarks",
         {
-          position: "top-right",
-          autoClose: 3000,
+          position: "top-center",
+        
         }
       );
       setSkLoading(false);

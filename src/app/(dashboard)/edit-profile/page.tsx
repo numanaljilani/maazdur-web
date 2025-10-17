@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { FaArrowLeft, FaEdit, FaUser, FaSignature, FaEnvelope, FaCalendar, FaFlag, FaMapMarkerAlt } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
 import ActivityIndicator from '@/components/ActivityIndicator';
 import { useUpdateProfileMutation, useMeMutation } from '@/service/api/userApi';
@@ -56,17 +56,17 @@ const UpdateProfile = () => {
       const res: any = await updateProfile({ data: inputFormData });
       if (res.data) {
         dispatch(setUser(res.data.user));
-        toast.success('Profile updated successfully', { position: 'top-right', autoClose: 3000 });
+        toast.success('Profile updated successfully', { position: 'top-center', autoClose: 3000 });
         router.back();
       } else {
         toast.error(res.error?.data?.message || 'Failed to update profile', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-right', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
     }
     setLoading(false);
   };
@@ -91,7 +91,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     if (isError && error) {
       console.error(error);
-      toast.error('Failed to update profile', { position: 'top-right', autoClose: 3000 });
+      toast.error('Failed to update profile', { position: 'top-center', autoClose: 3000 });
     }
   }, [isError, error]);
 

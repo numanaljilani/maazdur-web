@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { setLanguage, setToken, setUser } from '@/service/slice/userSlice';
 import { useMeMutation } from '@/service/api/userApi';
 
@@ -56,8 +56,8 @@ const Splash = () => {
       router.replace('/home');
       toast.success(data.message || (language ? 'लॉगिन सफल' : 'Login successful'), {
         // description: language ? 'मजदूर ऐप में आपका स्वागत है।' : 'Welcome back to Mazdur app.',
-        position: 'top-right',
-        autoClose: 3000,
+        position: 'top-center',
+      
       });
     }
   }, [isSuccess, data, dispatch, router, language]);

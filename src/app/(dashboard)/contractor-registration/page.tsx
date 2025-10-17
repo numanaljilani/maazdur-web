@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { FaTimes } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { services } from '@/constants/services';
 import { units } from '@/constants/unit';
 import { useBecomeContractorMutation, useContractorDetailsMutation } from '@/service/api/userApi';
@@ -47,7 +47,7 @@ const WorkDetailsInput = () => {
       return;
     }
     if (!service || !price || !unit || selectedSubServices.length === 0) {
-      toast.error('All fields are required', { position: 'top-right', autoClose: 3000 });
+      toast.error('All fields are required', { position: 'top-center', autoClose: 3000 });
       return;
     }
 
@@ -64,16 +64,16 @@ const WorkDetailsInput = () => {
       if (res.data) {
         dispatch(setUser(res.data.user));
         router.replace(`/contractor-details/${res.data.user._id}`);
-        toast.success('Registration successful', { position: 'top-right', autoClose: 3000 });
+        toast.success('Registration successful', { position: 'top-center', autoClose: 3000 });
       } else {
         toast.error(res.error?.data?.message || 'Registration failed', {
-          position: 'top-right',
-          autoClose: 3000,
+          position: 'top-center',
+        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-right', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
     }
     setIsLoading(false);
   };

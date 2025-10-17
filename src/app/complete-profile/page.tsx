@@ -138,7 +138,7 @@ const CompleteProfilePage = () => {
           setValue("address", locationDescription);
           
           toast.success("Location found successfully!", {
-            position: "top-right",
+            position: "top-center",
             autoClose: 2000,
           });
         },
@@ -159,15 +159,15 @@ const CompleteProfilePage = () => {
           }
           
           toast.error(errorMessage, {
-            position: "top-right",
-            autoClose: 3000,
+            position: "top-center",
+          
           });
         }
       );
     } else {
       toast.error("Geolocation is not supported by this browser", {
-        position: "top-right",
-        autoClose: 3000,
+        position: "top-center",
+      
       });
     }
   };
@@ -197,16 +197,16 @@ const CompleteProfilePage = () => {
       const response: any = await completeProfile({ body: formDataToSend });
       if (response.error) {
         toast.error(response.error.data?.error || "Profile creation failed.", {
-          position: "top-right",
-          autoClose: 3000,
+          position: "top-center",
+        
         });
         setLoading(false);
       }
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong.", {
-        position: "top-right",
-        autoClose: 3000,
+        position: "top-center",
+      
       });
       setLoading(false);
     }
@@ -217,8 +217,8 @@ const CompleteProfilePage = () => {
       dispatch(setUser(data.user));
       router.push("/login");
       toast.success("User Created Successfully. Please login.", {
-        position: "top-right",
-        autoClose: 3000,
+        position: "top-center",
+      
       });
       setLoading(false);
     }
@@ -232,8 +232,8 @@ const CompleteProfilePage = () => {
         error?.data?.error ||
           "User creation failed. This user may already be registered.",
         {
-          position: "top-right",
-          autoClose: 3000,
+          position: "top-center",
+        
         }
       );
       setLoading(false);
