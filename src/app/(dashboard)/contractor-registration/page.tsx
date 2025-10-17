@@ -47,7 +47,7 @@ const WorkDetailsInput = () => {
       return;
     }
     if (!service || !price || !unit || selectedSubServices.length === 0) {
-      toast.error('All fields are required', { position: 'top-center', autoClose: 3000 });
+      toast.error('All fields are required', { position: 'top-center',  });
       return;
     }
 
@@ -64,7 +64,7 @@ const WorkDetailsInput = () => {
       if (res.data) {
         dispatch(setUser(res.data.user));
         router.replace(`/contractor-details/${res.data.user._id}`);
-        toast.success('Registration successful', { position: 'top-center', autoClose: 3000 });
+        toast.success('Registration successful', { position: 'top-center',  });
       } else {
         toast.error(res.error?.data?.message || 'Registration failed', {
           position: 'top-center',
@@ -73,7 +73,7 @@ const WorkDetailsInput = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center',  });
     }
     setIsLoading(false);
   };

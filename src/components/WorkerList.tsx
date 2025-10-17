@@ -32,27 +32,27 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
         setContractors(updatedContractors);
         toast.success('Successfully added to bookmarks', {
           position: 'top-right',
-          autoClose: 3000,
+          
         });
       } else {
         toast.error(res.error?.data?.message || 'Failed to update bookmark', {
           position: 'top-right',
-          autoClose: 3000,
+          
         });
       }
     } catch (error) {
       console.error(error);
       toast.error('Something went wrong', {
         position: 'top-right',
-        autoClose: 3000,
-      });
+        
+      })
     }
   };
 
   const handleCall = () => {
     window.location.href = `tel:${item?.phone}`;
   };
-
+console.log(item)
   return (
     <Link
       href={`/contractor-details/${fromBookmark ? item.contractorId : item._id}?bookmarked=${item?.isBookmark || false}`}

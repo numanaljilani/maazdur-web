@@ -42,7 +42,7 @@ const WorkDetails = ({  }: {  }) => {
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center',  });
     }
     setLoading(false);
   };
@@ -67,7 +67,7 @@ const WorkDetails = ({  }: {  }) => {
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center',  });
     }
   };
 
@@ -94,7 +94,7 @@ const WorkDetails = ({  }: {  }) => {
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center',  });
     }
   };
 

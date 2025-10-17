@@ -26,11 +26,11 @@ const Profile = () => {
       if (res.data) {
         dispatch(setUser(res.data.user));
       } else {
-        toast.error('Failed to fetch user data', { position: 'top-center', autoClose: 3000 });
+        toast.error('Failed to fetch user data', { position: 'top-center' });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center' });
     }
     setLoading(false);
   };

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaArrowLeft, FaSearch, FaSync } from "react-icons/fa";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import ActivityIndicator from "@/components/ActivityIndicator";
 // import ServicesList from '@/components/Lists/ServicesList';
 // import WorkerList from '@/components/Lists/WorkerList';

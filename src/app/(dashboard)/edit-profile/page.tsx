@@ -56,7 +56,7 @@ const UpdateProfile = () => {
       const res: any = await updateProfile({ data: inputFormData });
       if (res.data) {
         dispatch(setUser(res.data.user));
-        toast.success('Profile updated successfully', { position: 'top-center', autoClose: 3000 });
+        toast.success('Profile updated successfully', { position: 'top-center',  });
         router.back();
       } else {
         toast.error(res.error?.data?.message || 'Failed to update profile', {
@@ -66,7 +66,7 @@ const UpdateProfile = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center', autoClose: 3000 });
+      toast.error('Something went wrong', { position: 'top-center',  });
     }
     setLoading(false);
   };
@@ -91,7 +91,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     if (isError && error) {
       console.error(error);
-      toast.error('Failed to update profile', { position: 'top-center', autoClose: 3000 });
+      toast.error('Failed to update profile', { position: 'top-center',  });
     }
   }, [isError, error]);
 
