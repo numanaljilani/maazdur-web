@@ -9,7 +9,6 @@ import { services } from '@/constants/services';
 import { units } from '@/constants/unit';
 import { useBecomeContractorMutation, useContractorDetailsMutation } from '@/service/api/userApi';
 import { setUser } from '@/service/slice/userSlice';
-import PhoneWarning from '@/components/PhoneWarning';
 import ActivityIndicator from '@/components/ActivityIndicator';
 
 const WorkDetailsInput = () => {
@@ -17,14 +16,14 @@ const WorkDetailsInput = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [service, setService] = useState(userData?.service || '');
+  const [phone, setPhone] = useState(userData?.phone || '');
   const [unit, setUnit] = useState(userData?.unit || '');
   const [contractorDetails, setContractorDetails] = useState<any>(null);
   const [price, setPrice] = useState(userData?.price || '');
-  const [isLoading, setIsLoading] = useState(false);
   const [about, setAbout] = useState(userData?.bio || '');
   const [selectedSubServices, setSelectedSubServices] = useState<string[]>(userData?.subService || []);
-  const [phoneModal, setPhoneModal] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [becomeContractor] = useBecomeContractorMutation();
   const [getContractorDetails, { isSuccess: detailsIsSuccess, data: contractorDetailsData }] =
     useContractorDetailsMutation();
@@ -41,18 +40,29 @@ const WorkDetailsInput = () => {
     setSelectedSubServices((prev) => prev.filter((s) => s !== subService));
   };
 
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!service) newErrors.service = language ? 'सेवा आवश्यक है' : 'Service is required';
+    if (!phone) newErrors.phone = language ? 'फोन नंबर आवश्यक है' : 'Phone number is required';
+    if (!price) newErrors.price = language ? 'मूल्य आवश्यक है' : 'Price is required';
+    if (!unit) newErrors.unit = language ? 'इकाई आवश्यक है' : 'Unit is required';
+    if (selectedSubServices.length === 0 && service)
+      newErrors.subServices = language ? 'कम से कम एक उप-सेवा चुनें' : 'Select at least one sub-service';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const registerContractor = async () => {
-    if (!userData.phone) {
-      setPhoneModal(true);
-      return;
-    }
-    if (!service || !price || !unit || selectedSubServices.length === 0) {
-      toast.error('All fields are required', { position: 'top-center',  });
+    if (!validateForm()) {
+      toast.error(language ? 'सभी फ़ील्ड आवश्यक हैं' : 'All fields are required', {
+        position: 'top-center',
+      });
       return;
     }
 
     const formData = new FormData();
     formData.append('service', service);
+    formData.append('phone', phone);
     formData.append('subServices', JSON.stringify(selectedSubServices));
     formData.append('price', price);
     formData.append('unit', unit);
@@ -64,16 +74,19 @@ const WorkDetailsInput = () => {
       if (res.data) {
         dispatch(setUser(res.data.user));
         router.replace(`/contractor-details/${res.data.user._id}`);
-        toast.success('Registration successful', { position: 'top-center',  });
-      } else {
-        toast.error(res.error?.data?.message || 'Registration failed', {
+        toast.success(language ? 'पंजीकरण सफल' : 'Registration successful', {
           position: 'top-center',
-        
+        });
+      } else {
+        toast.error(res.error?.data?.message || (language ? 'पंजीकरण विफल' : 'Registration failed'), {
+          position: 'top-center',
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center',  });
+      toast.error(language ? 'कुछ गलत हुआ' : 'Something went wrong', {
+        position: 'top-center',
+      });
     }
     setIsLoading(false);
   };
@@ -98,7 +111,11 @@ const WorkDetailsInput = () => {
   useEffect(() => {
     if (detailsIsSuccess && contractorDetailsData) {
       setContractorDetails(contractorDetailsData);
+      setService(contractorDetailsData?.service || '');
+      setPhone(contractorDetailsData?.phone || '');
       setPrice(contractorDetailsData?.price || '');
+      setUnit(contractorDetailsData?.unit || '');
+      setAbout(contractorDetailsData?.about || '');
       setSelectedSubServices(contractorDetailsData?.subServices || []);
     }
   }, [detailsIsSuccess, contractorDetailsData]);
@@ -106,50 +123,13 @@ const WorkDetailsInput = () => {
   return (
     <div className={`min-h-screen ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} p-4 sm:p-6 lg:p-8`}>
       {isLoading && <ActivityIndicator />}
-      {phoneModal && <PhoneWarning setModal={setPhoneModal} />}
-      {modalVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className={`rounded-lg p-6 max-w-md w-full ${dark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
-            <h2 className="text-lg font-[Poppins-Medium] text-center mb-4">
-              {language ? 'उप-सेवाएँ चुनें' : 'Select Sub-Services'}
-            </h2>
-            <div className="max-h-96 overflow-y-auto">
-              {subServices.map((item) => (
-                <button
-                  key={item.english}
-                  onClick={() => toggleSubService(item.english)}
-                  className={`w-full p-3 border-b border-gray-200  text-left ${
-                    selectedSubServices.includes(item.english) ? 'bg-purple-100 ' : ''
-                  }`}
-                >
-                  <span className="text-base">{language ? item.hindi : item.english}</span>
-                </button>
-              ))}
-            </div>
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={() => setModalVisible(false)}
-                className="bg-gray-300 text-gray-900 px-4 py-2 rounded-lg"
-              >
-                {language ? 'रद्द करें' : 'Cancel'}
-              </button>
-              <button
-                onClick={() => setModalVisible(false)}
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg"
-              >
-                {language ? 'पुष्टि करें' : 'Confirm'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center py-6">
-          <h1 className="text-xl sm:text-2xl font-font-semibold text-purple-700">
+          <h1 className="text-xl sm:text-2xl font-[Poppins-SemiBold] text-purple-700">
             {language ? 'ठेकेदार पंजीकरण' : 'Contractor Registration'}
           </h1>
-          <p className="text-sm text-gray-500 font-font-regular mt-2">
+          <p className="text-sm text-gray-500 font-[Poppins-Regular] mt-2">
             {language
               ? 'अपनी पहुंच बढ़ाने, ग्राहकों को आसानी से प्रबंधित करने और अपने व्यवसाय को सहजता से बढ़ाने के लिए एक सेवा प्रदाता के रूप में हमसे जुड़ें।'
               : 'Join us as a service provider to expand your reach, manage clients easily, and grow your business effortlessly.'}
@@ -157,32 +137,69 @@ const WorkDetailsInput = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-white  p-4 sm:p-6 rounded-lg shadow-md">
-          <select
-            value={service}
-            onChange={(e) => {
-              setService(e.target.value);
-              setSelectedSubServices([]);
-            }}
-            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
-              dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
-            } focus:outline-none focus:ring-2 focus:ring-purple-600`}
-          >
-            <option value="">{userData.isContractor ? contractorDetails?.service : 'Select Service'}</option>
-            {services.map((item, index) => (
-              <option key={index} value={item.english}>
-                {language ? item.hindi : item.english}
-              </option>
-            ))}
-          </select>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+          <div className="mb-4">
+            <label className="block text-gray-500 font-[Poppins-Medium] mb-1">
+              {language ? 'सेवा' : 'Service'}
+            </label>
+            <select
+              value={service}
+              onChange={(e) => {
+                setService(e.target.value);
+                setSelectedSubServices([]);
+                setErrors((prev) => ({ ...prev, service: '' }));
+              }}
+              className={`w-full p-3 border rounded-lg ${
+                dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+              } focus:outline-none focus:ring-2 focus:ring-purple-600 ${
+                errors.service ? 'border-red-500' : 'border-gray-300'
+              }`}
+            >
+              <option value="">{userData.isContractor ? contractorDetails?.service : language ? 'सेवा चुनें' : 'Select Service'}</option>
+              {services.map((item, index) => (
+                <option key={index} value={item.english}>
+                  {language ? item.hindi : item.english}
+                </option>
+              ))}
+            </select>
+            {errors.service && (
+              <p className="text-red-500 text-sm mt-1">{errors.service}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-500 font-[Poppins-Medium] mb-1">
+              {language ? 'फोन नंबर' : 'Phone Number'}
+            </label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => {
+                setPhone(e.target.value);
+                setErrors((prev) => ({ ...prev, phone: '' }));
+              }}
+              placeholder={language ? 'फोन नंबर' : 'Phone Number'}
+              className={`w-full p-3 border rounded-lg ${
+                dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+              } focus:outline-none focus:ring-2 focus:ring-purple-600 ${
+                errors.phone ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            )}
+          </div>
 
           {service && (
-            <>
-              <div className="flex flex-wrap gap-2 mb-4">
+            <div className="mb-4">
+              <label className="block text-gray-500 font-[Poppins-Medium] mb-2">
+                {language ? 'उप-सेवाएँ' : 'Sub-Services'}
+              </label>
+              <div className="flex flex-wrap gap-2 mb-2">
                 {selectedSubServices.map((subService) => (
                   <div
                     key={subService}
-                    className="flex items-center bg-gray-200  px-3 py-1 rounded-full"
+                    className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
                   >
                     <span className="text-sm mr-2">
                       {language
@@ -195,53 +212,97 @@ const WorkDetailsInput = () => {
                   </div>
                 ))}
               </div>
-              <button
-                onClick={() => setModalVisible(true)}
-                className="w-full bg-gray-100  text-gray-900  p-3 rounded-lg mb-4"
-              >
-                {language ? 'उप-सेवाएँ चुनें' : 'Select Sub-Services'}
-              </button>
-            </>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {subServices.map((item) => (
+                  <label key={item.english} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedSubServices.includes(item.english)}
+                      onChange={() => {
+                        toggleSubService(item.english);
+                        setErrors((prev) => ({ ...prev, subServices: '' }));
+                      }}
+                      className="mr-2 h-4 w-4 text-purple-600 focus:ring-purple-600 border-gray-300 rounded"
+                    />
+                    <span className="text-sm">{language ? item.hindi : item.english}</span>
+                  </label>
+                ))}
+              </div>
+              {errors.subServices && (
+                <p className="text-red-500 text-sm mt-1">{errors.subServices}</p>
+              )}
+            </div>
           )}
 
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Price"
-            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
-              dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
-            } focus:outline-none focus:ring-2 focus:ring-purple-600`}
-          />
+          <div className="mb-4">
+            <label className="block text-gray-500 font-[Poppins-Medium] mb-1">
+              {language ? 'मूल्य' : 'Price'}
+            </label>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => {
+                setPrice(e.target.value);
+                setErrors((prev) => ({ ...prev, price: '' }));
+              }}
+              placeholder={language ? 'मूल्य' : 'Price'}
+              className={`w-full p-3 border rounded-lg ${
+                dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+              } focus:outline-none focus:ring-2 focus:ring-purple-600 ${
+                errors.price ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+            {errors.price && (
+              <p className="text-red-500 text-sm mt-1">{errors.price}</p>
+            )}
+          </div>
 
-          <select
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
-              dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
-            } focus:outline-none focus:ring-2 focus:ring-purple-600`}
-          >
-            <option value="">{userData.isContractor ? contractorDetails?.unit : 'Select Unit'}</option>
-            {units.map((item, index) => (
-              <option key={index} value={item.english}>
-                {language ? item.hindi : item.english}
-              </option>
-            ))}
-          </select>
+          <div className="mb-4">
+            <label className="block text-gray-500 font-[Poppins-Medium] mb-1">
+              {language ? 'इकाई' : 'Unit'}
+            </label>
+            <select
+              value={unit}
+              onChange={(e) => {
+                setUnit(e.target.value);
+                setErrors((prev) => ({ ...prev, unit: '' }));
+              }}
+              className={`w-full p-3 border rounded-lg ${
+                dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+              } focus:outline-none focus:ring-2 focus:ring-purple-600 ${
+                errors.unit ? 'border-red-500' : 'border-gray-300'
+              }`}
+            >
+              <option value="">{userData.isContractor ? contractorDetails?.unit : language ? 'इकाई चुनें' : 'Select Unit'}</option>
+              {units.map((item, index) => (
+                <option key={index} value={item.english}>
+                  {language ? item.hindi : item.english}
+                </option>
+              ))}
+            </select>
+            {errors.unit && (
+              <p className="text-red-500 text-sm mt-1">{errors.unit}</p>
+            )}
+          </div>
 
-          <textarea
-            value={about}
-            onChange={(e) => setAbout(e.target.value)}
-            placeholder={userData.isContractor ? contractorDetails?.about : 'About'}
-            rows={4}
-            className={`w-full p-3 border border-gray-300  rounded-lg mb-4 ${
-              dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
-            } focus:outline-none focus:ring-2 focus:ring-purple-600`}
-          />
+          <div className="mb-4">
+            <label className="block text-gray-500 font-[Poppins-Medium] mb-1">
+              {language ? 'के बारे में' : 'About'}
+            </label>
+            <textarea
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+              placeholder={userData.isContractor ? contractorDetails?.about : language ? 'के बारे में' : 'About'}
+              rows={4}
+              className={`w-full p-3 border rounded-lg ${
+                dark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+              } focus:outline-none focus:ring-2 focus:ring-purple-600 border-gray-300`}
+            />
+          </div>
 
           <button
             onClick={registerContractor}
-            className="w-full bg-purple-600 text-white py-3 rounded-full font-medium text-lg tracking-wider"
+            className="w-full bg-purple-600 text-white py-3 rounded-full font-[Poppins-Medium] text-lg tracking-wider"
           >
             {language ? 'जारी रखें' : 'Continue'}
           </button>
@@ -249,7 +310,7 @@ const WorkDetailsInput = () => {
           {userData.isContractor && (
             <button
               onClick={() => router.push(`/contractor-details/${userData._id}`)}
-              className="w-full bg-purple-600 text-white py-3 rounded-full mt-2 font-medium text-lg tracking-wider"
+              className="w-full bg-purple-600 text-white py-3 rounded-full mt-2 font-[Poppins-Medium] text-lg tracking-wider"
             >
               {language ? 'प्रोफाइल देखें' : 'View Profile'}
             </button>

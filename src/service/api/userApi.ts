@@ -196,6 +196,13 @@ export const userzApi = createApi({
         };
       },
     }),
+     report: builder.mutation({
+      query: (body) => ({
+        url: 'report',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -206,6 +213,7 @@ export const {
   useCompleteProfileMutation,
   useDeleteMyAccountMutation,
   useGoogleAuthMutation,
+  useReportMutation,
 
   useUploadPostMutation,
   useCompleteContractorRegistrationMutation,

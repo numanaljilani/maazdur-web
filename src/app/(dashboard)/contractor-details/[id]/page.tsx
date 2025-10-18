@@ -6,11 +6,11 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
-import { FaArrowLeft, FaBookmark, FaStar, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
-import { useContractorDetailsMutation, useUploadPostMutation, useBookmarkMutation } from '@/service/api/userApi';
+import { FaArrowLeft, FaBookmark, FaStar, FaMapMarkerAlt, FaPhone, FaFlag } from 'react-icons/fa';
+import { useContractorDetailsMutation, useUploadPostMutation, useBookmarkMutation, useReportMutation } from '@/service/api/userApi';
 import ActivityIndicator from '@/components/ActivityIndicator';
 
-const WorkDetails = ({  }: {  }) => {
+const WorkDetails = () => {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -21,12 +21,15 @@ const WorkDetails = ({  }: {  }) => {
   const [bookmark, setBookmark] = useState(bookmarked);
   const [rating, setRating] = useState(1);
   const [text, setText] = useState('');
+  const [reportText, setReportText] = useState('');
+  const [showReportModal, setShowReportModal] = useState(false);
   const [seeMore, setSeeMore] = useState(false);
   const [posts, setPosts] = useState([]);
   const [reviewsData, setReviewsData] = useState([]);
   const [getContractorDetails, { data, isSuccess, isError, error }] = useContractorDetailsMutation();
   const [uploadPost] = useUploadPostMutation();
   const [addToBookmark] = useBookmarkMutation();
+  const [report, { isLoading: reportLoading, isSuccess: reportSuccess, error: reportError }] = useReportMutation();
 
   const getDetails = async () => {
     setLoading(true);
@@ -35,14 +38,13 @@ const WorkDetails = ({  }: {  }) => {
       if (res.data) {
         setContractorDetails(res.data);
       } else {
-        toast.error(res.error?.data?.message || 'Failed to fetch contractor details', {
+        toast.error(res.error?.data?.message || (language ? 'ठेकेदार विवरण प्राप्त करने में विफल' : 'Failed to fetch contractor details'), {
           position: 'top-center',
-        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center',  });
+      toast.error(language ? 'कुछ गलत हुआ' : 'Something went wrong', { position: 'top-center' });
     }
     setLoading(false);
   };
@@ -55,19 +57,17 @@ const WorkDetails = ({  }: {  }) => {
       });
       if (res.data) {
         setBookmark(!bookmark);
-        toast.success('Successfully updated bookmark', {
+        toast.success(language ? 'बुकमार्क सफलतापूर्वक अपडेट किया गया' : 'Successfully updated bookmark', {
           position: 'top-center',
-        
         });
       } else {
-        toast.error(res.error?.data?.message || 'Failed to update bookmark', {
+        toast.error(res.error?.data?.message || (language ? 'बुकमार्क अपडेट करने में विफल' : 'Failed to update bookmark'), {
           position: 'top-center',
-        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center',  });
+      toast.error(language ? 'कुछ गलत हुआ' : 'Something went wrong', { position: 'top-center' });
     }
   };
 
@@ -82,24 +82,54 @@ const WorkDetails = ({  }: {  }) => {
     try {
       const res: any = await uploadPost({ body: formData, token: userData.accessToken });
       if (res.data) {
-        toast.success('Image uploaded successfully', {
+        toast.success(language ? 'छवि सफलतापूर्वक अपलोड की गई' : 'Image uploaded successfully', {
           position: 'top-center',
-        
         });
       } else {
-        toast.error(res.error?.data?.message || 'Failed to upload image', {
+        toast.error(res.error?.data?.message || (language ? 'छवि अपलोड करने में विफल' : 'Failed to upload image'), {
           position: 'top-center',
-        
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong', { position: 'top-center',  });
+      toast.error(language ? 'कुछ गलत हुआ' : 'Something went wrong', { position: 'top-center' });
     }
   };
 
   const handleCall = () => {
     window.location.href = `tel:${contractorDetails?.phone}`;
+  };
+
+  const handleReport = async () => {
+    if (!reportText.trim()) {
+      toast.error(language ? 'रिपोर्ट संदेश आवश्यक है' : 'Report message is required', {
+        position: 'top-center',
+      });
+      return;
+    }
+
+    try {
+      const res: any = await report({
+        name: userData?.fullname || 'Anonymous',
+        userId: userData._id,
+        message: reportText,
+        type: 'report',
+      });
+      if (res.data) {
+        toast.success(language ? 'हमारी सहायता टीम जल्द से जल्द आपसे संपर्क करेगी।' : 'Our support team will contact you as soon as possible.', {
+          position: 'top-center',
+        });
+        setShowReportModal(false);
+        setReportText('');
+      } else {
+        toast.error(res.error?.data?.message || (language ? 'रिपोर्ट करने में विफल' : 'Failed to submit report'), {
+          position: 'top-center',
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(language ? 'कुछ गलत हुआ' : 'Something went wrong', { position: 'top-center' });
+    }
   };
 
   useEffect(() => {
@@ -116,11 +146,11 @@ const WorkDetails = ({  }: {  }) => {
           {isExpanded ? children : truncatedText}
         </p>
         {children.length > maxChars && (
-          <button 
-            onClick={() => setIsExpanded(!isExpanded)} 
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
             className="text-blue-500 text-sm mt-1 hover:text-blue-600 transition-colors"
           >
-            {isExpanded ? 'Read less' : 'Read more'}
+            {isExpanded ? (language ? 'कम पढ़ें' : 'Read less') : (language ? 'और पढ़ें' : 'Read more')}
           </button>
         )}
       </div>
@@ -139,9 +169,11 @@ const WorkDetails = ({  }: {  }) => {
             key={index}
             onClick={() => handlePress(value)}
             className={`px-3 py-2 rounded-full border-2 border-purple-600 text-xs sm:text-sm font-medium whitespace-nowrap min-w-max ${
-              isPressed === value 
-                ? 'bg-purple-600 text-white' 
-                : 'bg-white text-purple-600  '
+              isPressed === value
+                ? 'bg-purple-600 text-white'
+                : dark
+                ? 'bg-gray-700 text-purple-600'
+                : 'bg-white text-purple-600'
             } transition-colors duration-200`}
           >
             {value}
@@ -152,25 +184,52 @@ const WorkDetails = ({  }: {  }) => {
   };
 
   return (
-    <div className={`min-h-screen relative pb-25 ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} relative pb-20`}>
-      {loading ? (
+    <div className={`min-h-screen relative pb-20 ${dark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      {loading || reportLoading ? (
         <div className="flex justify-center items-center min-h-screen">
           <ActivityIndicator />
         </div>
       ) : (
         <>
-          {/* Back Button */}
-         
+          {/* Report Modal */}
+          {showReportModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className={`rounded-lg p-6 max-w-md w-full ${dark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
+                <h2 className="text-lg font-[Poppins-Medium] text-center mb-4">
+                  {language ? 'ठेकेदार की शिकायत करें' : 'Report Contractor'}
+                </h2>
+                <textarea
+                  value={reportText}
+                  onChange={(e) => setReportText(e.target.value)}
+                  placeholder={language ? 'अपनी शिकायत यहाँ लिखें' : 'Write your report here'}
+                  rows={4}
+                  className={`w-full p-3 border rounded-lg ${
+                    dark ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'
+                  } focus:outline-none focus:ring-2 focus:ring-purple-600`}
+                />
+                <div className="flex justify-between mt-4">
+                  <button
+                    onClick={() => setShowReportModal(false)}
+                    className="bg-gray-300 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  >
+                    {language ? 'रद्द करें' : 'Cancel'}
+                  </button>
+                  <button
+                    onClick={handleReport}
+                    className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    {language ? 'जमा करें' : 'Submit'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Image Carousel */}
           <div className="relative w-full h-[250px] xs:h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px]">
             <div className="flex w-full h-full items-center justify-center">
               <img
-                src={
-                  contractorDetails?.image 
-                    ? contractorDetails.image 
-                    : '/icons/icon-512x512.png'
-                }
+                src={contractorDetails?.image ? contractorDetails.image : '/icons/icon-512x512.png'}
                 alt="contractor"
                 className="w-full h-full object-cover"
                 onError={(e) => {
@@ -201,22 +260,33 @@ const WorkDetails = ({  }: {  }) => {
                       }}
                     />
                     <p className={`text-sm ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {contractorDetails?.rating || 5} ({contractorDetails?.rewies || 0} reviews)
+                      {contractorDetails?.rating || 5} ({contractorDetails?.rewies || 0} {language ? 'समीक्षाएँ' : 'reviews'})
                     </p>
                   </div>
                 </div>
               </div>
-              <button 
-                onClick={addToBookmarks}
-                className="flex-shrink-0 p-2 hover:bg-gray-100  rounded-full transition-colors"
-              >
-                <FaBookmark
-                  size={28}
-                  className={bookmark ? 'text-purple-600' : 'text-gray-400'}
-                />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={addToBookmarks}
+                  className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <FaBookmark
+                    size={28}
+                    className={bookmark ? 'text-purple-600' : 'text-gray-400'}
+                  />
+                </button>
+                <button
+                  onClick={() => setShowReportModal(true)}
+                  className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <FaFlag
+                    size={28}
+                    className="text-gray-400 hover:text-purple-600"
+                  />
+                </button>
+              </div>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-2 mt-3">
               <span className="bg-purple-100 text-purple-600 text-xs font-medium px-3 py-1.5 rounded-lg w-fit">
                 {contractorDetails?.service || ''}
@@ -228,39 +298,39 @@ const WorkDetails = ({  }: {  }) => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-2 mt-3">
               <div className="flex items-center gap-2">
                 <p className="text-purple-600 text-2xl sm:text-3xl font-semibold">₹ {contractorDetails?.price || ''}</p>
                 <p className={`text-sm ${dark ? 'text-gray-300' : 'text-gray-600'}`}>({contractorDetails?.unit || ''})</p>
               </div>
             </div>
-            <div className="border-b border-gray-300  my-4" />
+            <div className="border-b border-gray-300 my-4" />
           </div>
 
           {/* About */}
           <div className="px-4 sm:px-6 lg:px-8">
-            <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'} mb-3`}>About me</h2>
+            <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'} mb-3`}>{language ? 'मेरे बारे में' : 'About me'}</h2>
             <ReadMoreText maxChars={120}>{contractorDetails?.about || ''}</ReadMoreText>
           </div>
 
           {/* Photos & Videos */}
           <div className="px-4 sm:px-6 lg:px-8 mt-6">
             <div className="flex justify-between items-center mb-3">
-              <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>Photos & Videos</h2>
+              <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>{language ? 'फोटो और वीडियो' : 'Photos & Videos'}</h2>
               {posts.length > 0 && (
-                <Link 
-                  href={`/dashboard/more-posts?contractorId=${params.id}`} 
+                <Link
+                  href={`/dashboard/more-posts?contractorId=${params.id}`}
                   className="text-purple-600 font-semibold text-sm hover:text-purple-700 transition-colors"
                 >
-                  See all
+                  {language ? 'सभी देखें' : 'See all'}
                 </Link>
               )}
             </div>
-            
+
             <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
               {posts.slice(0, 5).map((item: any, index: number) => (
-                <div key={index} className="aspect-square rounded-lg overflow-hidden bg-gray-200 ">
+                <div key={index} className="aspect-square rounded-lg overflow-hidden bg-gray-200">
                   <img
                     src={item.imageurl || '/placeholder-image.jpg'}
                     alt="post"
@@ -272,10 +342,10 @@ const WorkDetails = ({  }: {  }) => {
                 </div>
               ))}
             </div>
-            
+
             {userData._id === params.id && (
               <div className="mt-4 flex justify-end">
-                <label className="bg-gray-200  rounded-lg w-full xs:w-1/2 sm:w-1/3 md:w-1/4 py-8 flex justify-center items-center cursor-pointer hover:bg-gray-300  transition-colors">
+                <label className="bg-gray-200 rounded-lg w-full xs:w-1/2 sm:w-1/3 md:w-1/4 py-8 flex justify-center items-center cursor-pointer hover:bg-gray-300 transition-colors">
                   <span className="text-4xl text-gray-400">+</span>
                   <input type="file" className="hidden" accept="image/*" onChange={uploadImage} />
                 </label>
@@ -298,43 +368,43 @@ const WorkDetails = ({  }: {  }) => {
                   }}
                 />
                 <h2 className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
-                  {contractorDetails?.rating || 5} ({contractorDetails?.rewies || 0} reviews)
+                  {contractorDetails?.rating || 5} ({contractorDetails?.rewies || 0} {language ? 'समीक्षाएँ' : 'reviews'})
                 </h2>
               </div>
               {reviewsData.length > 0 && (
-                <Link 
-                  href={`/dashboard/reviews?contractorId=${params.id}`} 
+                <Link
+                  href={`/dashboard/reviews?contractorId=${params.id}`}
                   className="text-purple-600 font-semibold text-sm hover:text-purple-700 transition-colors"
                 >
-                  See all
+                  {language ? 'सभी देखें' : 'See all'}
                 </Link>
               )}
             </div>
 
             {searchParams.get('canPost') === 'true' && (
-              <div className="border border-gray-300  p-4 rounded-2xl sm:rounded-3xl mt-4 mb-6">
+              <div className="border border-gray-300 p-4 rounded-2xl sm:rounded-3xl mt-4 mb-6">
                 <div className="flex gap-1 sm:gap-2 justify-center sm:justify-start">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <button 
-                      key={star} 
+                    <button
+                      key={star}
                       onClick={() => setRating(star)}
                       className="p-1 hover:scale-110 transition-transform"
                     >
-                      <FaStar 
-                        size={22} 
-                        className={rating >= star ? 'text-purple-600' : 'text-gray-400'} 
+                      <FaStar
+                        size={22}
+                        className={rating >= star ? 'text-purple-600' : 'text-gray-400'}
                       />
                     </button>
                   ))}
                 </div>
                 <input
                   type="text"
-                  placeholder="Post your comment"
+                  placeholder={language ? 'अपनी टिप्पणी पोस्ट करें' : 'Post your comment'}
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   className={`w-full mt-4 p-3 rounded-lg text-sm sm:text-base ${
-                    dark 
-                      ? 'bg-gray-700 text-white placeholder-gray-400' 
+                    dark
+                      ? 'bg-gray-700 text-white placeholder-gray-400'
                       : 'bg-gray-100 text-gray-900 placeholder-gray-500'
                   } focus:outline-none focus:ring-2 focus:ring-purple-600 transition-colors`}
                 />
@@ -343,7 +413,7 @@ const WorkDetails = ({  }: {  }) => {
                     // onClick={postReview}
                     className="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
                   >
-                    Post
+                    {language ? 'पोस्ट करें' : 'Post'}
                   </button>
                 </div>
               </div>
@@ -351,10 +421,10 @@ const WorkDetails = ({  }: {  }) => {
 
             <div className="space-y-4">
               {reviewsData.map((item: any, index: number) => (
-                <div key={index} className="pb-4 border-b border-gray-200  last:border-b-0">
+                <div key={index} className="pb-4 border-b border-gray-200 last:border-b-0">
                   <div className="flex justify-between items-start gap-3">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex-shrink-0 w-10 h-10 bg-gray-300  rounded-full overflow-hidden">
+                      <div className="flex-shrink-0 w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
                         <img
                           src={item?.user?.image || '/avatar.png'}
                           alt="user"
@@ -382,22 +452,22 @@ const WorkDetails = ({  }: {  }) => {
                 </div>
               ))}
             </div>
-            
+
             {reviewsData.length > 0 && (
-              <div className="border-b border-gray-300  my-6" />
+              <div className="border-b border-gray-300 my-6" />
             )}
           </div>
 
           {/* Call Button - Fixed Bottom */}
-          <div className="fixed bottom-15 left-0 right-0 p-4 bg-gradient-to-t from-white via-white/95 to-transparent ">
+          <div className="fixed bottom-18 left-0 right-0 p-4 bg-gradient-to-t from-white via-white/95 to-transparent">
             <div className="max-w-4xl mx-auto">
               <button
                 onClick={handleCall}
-                className="w-full flex items-center justify-center bg-white border-2 border-purple-600 text-purple-600 py-4 px-6 rounded-2xl hover:bg-purple-50   transition-colors duration-200 shadow-lg"
+                className="w-full flex items-center justify-center bg-white border-2 border-purple-600 text-purple-600 py-4 px-6 rounded-2xl hover:bg-purple-50 transition-colors duration-200 shadow-lg"
               >
                 <div className="flex items-center justify-center gap-3">
                   <FaPhone size={20} className="text-purple-600" />
-                  <span className="text-lg font-semibold">Call Now</span>
+                  <span className="text-lg font-semibold">{language ? 'अभी कॉल करें' : 'Call Now'}</span>
                 </div>
               </button>
             </div>
