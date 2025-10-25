@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import icons from '../../constants/icons';
+import {icons} from '../../constants/icons';
 import {
   bg_color2,
   secondary_text_color,
