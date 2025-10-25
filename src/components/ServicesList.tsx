@@ -11,7 +11,7 @@ const ServicesList: React.FC<ServicesListProps> = ({ setService, item, service, 
   return (
     <button
       onClick={() => setService(item.english)}
-      className={`rounded-full h-12 py-2 px-4 mx-1 my-3 w-fit  border-2 border-purple-600 font-medium ${
+      className={`rounded-full h-12 py-2 px-4 mx-1 my-3 min-w-fit  border-2 border-purple-600 font-medium ${
         item.english === service ? 'bg-purple-600 text-white' : 'bg-gray-100  text-purple-600'
       }`}
     >

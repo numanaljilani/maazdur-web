@@ -9,6 +9,16 @@ export const services = [
       {english: 'Circuit Breaker', hindi: 'सर्किट ब्रेकर'},
     ],
   },
+    {
+    id: 27,
+    english: 'Priest/Ceremonial',
+    hindi: 'आचार्य/पुरोहित',
+    subservices: [
+      {english: 'Pooja Ceremony', hindi: 'पूजा समारोह'},
+      {english: 'Vastu Consultation', hindi: 'वास्तु परामर्श'},
+      {english: 'Astrological Services', hindi: 'ज्योतिषीय सेवाएँ'},
+    ],
+  },
   {
     id: 2,
     english: 'Plumber',
@@ -272,16 +282,7 @@ export const services = [
       {english: 'Commercial Vehicle', hindi: 'वाणिज्यिक वाहन (ट्रक/टैक्सी)'},
     ],
   },
-  {
-    id: 27,
-    english: 'Priest/Ceremonial Services',
-    hindi: 'आचार्य/पुरोहित',
-    subservices: [
-      {english: 'Pooja Ceremony', hindi: 'पूजा समारोह'},
-      {english: 'Vastu Consultation', hindi: 'वास्तु परामर्श'},
-      {english: 'Astrological Services', hindi: 'ज्योतिषीय सेवाएँ'},
-    ],
-  },
+
   {
     id: 28,
     english: 'Local Skilled Worker',

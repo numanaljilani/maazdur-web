@@ -170,7 +170,7 @@ const HomePage = () => {
         >
           {language ? "सेवाएं" : "Services"}
         </h2>
-        <div className="flex flex-wrap justify-between gap-3 justify-center">
+        <div className="flex flex-wrap justify-between gap-3 px-2">
           {[
             {
               name: language ? "सहायक" : "Helper",
@@ -203,9 +203,19 @@ const HomePage = () => {
               service: "Repairing",
             },
             {
-              name: language ? "चित्रकारी" : "Painting",
-              icon: <FaPaintRoller className="text-blue-500" size={25} />,
-              service: "Painting",
+              name: language ? "चित्रकारी" : "Priest",
+              icon: (
+                <Image
+                  src="/acharya.png"
+                  style={{ color: "green" }}
+                  alt="farmer"
+                  width={32}
+                  height={32}
+                  className={``}
+                  onError={() => console.error("Failed to load farmer icon")}
+                />
+              ),
+              service: "Priest/Ceremonial",
             },
             {
               name: language ? "कपड़े धोना" : "Laundry",
@@ -227,7 +237,7 @@ const HomePage = () => {
               icon: <FaTools className="text-green-500" size={25} />,
               service: "Plumbing",
             },
-            // { name: language ? 'अधिक' : 'More', icon: <FaEllipsisH className="text-purple-600" size={25} />, service: 'More' },
+            { name: language ? 'अधिक' : 'More', icon: <FaEllipsisH className="text-purple-600" size={25} />, service: 'More' },
           ].map((item, index) => (
             <Link
               key={index}
