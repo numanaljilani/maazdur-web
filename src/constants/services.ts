@@ -11,8 +11,8 @@ export const services = [
   },
     {
     id: 27,
-    english: 'Priest/Ceremonial',
-    hindi: 'आचार्य/पुरोहित',
+    english: 'Priest',
+    hindi: 'आचार्य',
     subservices: [
       {english: 'Pooja Ceremony', hindi: 'पूजा समारोह'},
       {english: 'Vastu Consultation', hindi: 'वास्तु परामर्श'},

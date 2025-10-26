@@ -52,7 +52,7 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
   const handleCall = () => {
     window.location.href = `tel:${item?.phone}`;
   };
-console.log(item)
+
   return (
     <Link
       href={`/contractor-details/${fromBookmark ? item.contractorId : item._id}?bookmarked=${item?.isBookmark || false}`}

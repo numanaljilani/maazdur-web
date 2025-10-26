@@ -160,6 +160,7 @@ export const userzApi = createApi({
     }),
     getContractors: builder.mutation({
       query: ({service}) => {
+        console.log(service)
         return {
           url: `/contractors/?service=${service || ''}`,
           method: 'GET',
