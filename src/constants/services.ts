@@ -181,12 +181,13 @@ export const services = [
   },
   {
     id: 18,
-    english: 'Masonry',
+    english: 'Masonry/cement work',
     hindi: 'ईंट बाँधनेवाला',
     subservices: [
       {english: 'Brickwork', hindi: 'ईंट का काम'},
       {english: 'Stone Masonry', hindi: 'पत्थर की चिनाई'},
       {english: 'Concrete Work', hindi: 'कंक्रीट का काम'},
+      {english: 'cement work', hindi: 'कंक्रीट का काम'},
     ],
   },
   {
