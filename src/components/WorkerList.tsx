@@ -3,7 +3,7 @@
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
-import { FaPhone, FaStarHalfAlt } from 'react-icons/fa';
+import { FaPhone, FaStarHalfAlt , FaLocationArrow } from 'react-icons/fa';
 import { useBookmarkMutation } from '@/service/api/userApi';
 
 interface WorkerListProps {
@@ -52,7 +52,7 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
   const handleCall = () => {
     window.location.href = `tel:${item?.phone}`;
   };
-
+console.log(item , "OITEMS")
   return (
     <Link
       href={`/contractor-details/${fromBookmark ? item.contractorId : item._id}?bookmarked=${item?.isBookmark || false}`}
@@ -104,15 +104,18 @@ const WorkerList: React.FC<WorkerListProps> = ({ item, contractors, setContracto
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
-              <FaStarHalfAlt className="text-yellow-500" size={17} />
-              <span className="text-gray-500 font-semibold text-sm">
+              <FaLocationArrow className="text-yellow-500" size={17} />
+              {/* <span className="text-gray-500 font-semibold text-sm">
                 {item?.rating || item?.contractor?.rating || 5}
+              </span> */}
+              <span className="text-gray-500 font-semibold text-sm">
+                {item?.address || item?.contractor?.address || 5}
               </span>
             </div>
-            <div className="border-l h-4" />
-            <span className="text-gray-500 font-semibold text-sm">
+            <div className=" h-4" />
+            {/* <span className="text-gray-500 font-semibold text-sm">
               {(item?.rewies || item?.contractor?.rewies || 0)} + Reviews
-            </span>
+            </span> */}
           </div>
         </div>
         <button
