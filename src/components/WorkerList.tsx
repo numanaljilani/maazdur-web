@@ -92,6 +92,9 @@ console.log(item , "OITEMS")
             <span className={`text-lg font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
               {item?.service || 'Electrician'}
             </span>
+             <span className="text-gray-500 mx-2 font-semibold text-lg">
+              {(item?.isActive || "✅" || "❌")}
+            </span>
             {/* <button onClick={(e) => { e.preventDefault(); addToBookmarks(); }} className="ml-2">
               <img
                 src={fromBookmark || item?.isBookmark ? '/icons/bookmark.png' : '/icons/bookmark1.png'}
@@ -113,9 +116,7 @@ console.log(item , "OITEMS")
               </span>
             </div>
             <div className=" h-4" />
-            {/* <span className="text-gray-500 font-semibold text-sm">
-              {(item?.rewies || item?.contractor?.rewies || 0)} + Reviews
-            </span> */}
+           
           </div>
         </div>
         <button
