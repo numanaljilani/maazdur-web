@@ -14,8 +14,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false,
-  themeColor: '#000000',
+  userScalable: false
 }
 
 export const metadata: Metadata = {
@@ -25,7 +24,7 @@ export const metadata: Metadata = {
   },
   description: 'Find trusted service providers for all your home needs',
   manifest: '/manifest.json',
-  themeColor: '#000000',
+
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
