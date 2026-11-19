@@ -93,7 +93,7 @@ console.log(item , "OITEMS")
               {item?.service || 'Electrician'}
             </span>
              <span className="text-gray-500 mx-2 font-semibold text-lg">
-              {(item?.isActive || "✅" || "❌")}
+              {(item?.isActive ? "✅" : "❌")}
             </span>
             {/* <button onClick={(e) => { e.preventDefault(); addToBookmarks(); }} className="ml-2">
               <img

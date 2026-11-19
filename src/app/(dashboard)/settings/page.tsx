@@ -239,7 +239,7 @@ const ProfilePage = () => {
                   </div>
 
                   {/* Original Buttons (Settings + Logout) - Kept as requested */}
-                  <button
+                  {/* <button
                     onClick={() => router.push('/settings')}
                     className="w-full flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-gray-50 border border-gray-100 text-gray-700 hover:text-gray-900"
                   >
@@ -253,7 +253,7 @@ const ProfilePage = () => {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                  </button>
+                  </button> */}
 
                   <button
                     onClick={handleLogout}
